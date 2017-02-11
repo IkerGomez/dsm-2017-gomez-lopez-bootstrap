@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title> Práctica 02 | DSM </title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/stylish.css">
+    <link rel="stylesheet" href="css/reset.css"> <!-- CSS reset -->
+    <link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
+    <link rel="stylesheet" href="css/custom.css">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+    <script src="js/modernizr.js"></script>
+    <!--<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>-->
+    <script src="js/customjs.js"></script>
+    <script src="js/main.js"></script> <!-- Resource jQuery -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <script>
+        $('document').ready(function() {
+            var models = $('.mainPicture');
+
+            models.each(function(){
+                var model = $(this);
+
+                model.on('click', function(event){
+                    event.preventDefault();
+
+                    $('.mainPicture.selected').removeClass('selected');
+
+                    var selectedItem = $(this);
+                    if(!selectedItem.hasClass('selected')) {
+                        selectedItem.addClass('selected');
+                    }
+
+                    var tabs = $('.cd-tabs');
+                    var tabItems = tabs.find('ul.cd-tabs-navigation').find('li');
+                    var tabActive = false;
+                    tabItems.each(function () {
+                        var selectedItem = $(this).find('a');
+                        if(selectedItem.hasClass('selected'))
+                        {
+                            selectedItem.click();
+                            tabActive = true;
+                        }
+                    });
+
+                    if(!tabActive)
+                    {
+                        tabItems.first().find('a').click();
+                    }
+                });
+            });
+
+            var pictures = $('.smallPicture');
+
+            pictures.each(function () {
+                var img = $(this);
+
+                img.on('click', function (event) {
+                    event.preventDefault();
+
+                    var bigPicture = img.closest('.pictures').find('.bigPicture');
+                    var imgPath = img.attr('src');
+                    bigPicture.attr('src', imgPath);
+                })
+            });
+
+            var buyButtons = $('.buyButton');
+
+            buyButtons.each(function () {
+                var button = $(this);
+                var template = "<li class='row' id='##id##'> <span class='quantity'>##Q##</span> <span class='itemName'>##N##</span> <span class='popbtn'><a class='glyphicon glyphicon-remove'></a></span> <span class='price'>##P##</span> </li>"
+
+                var names = ["Porsche Panamera", "BMW M6", "Mercedes CLS AMG"];
+                var prices = [120000, 160000, 140000];
+
+                button.on('click', function () {
+                    var num = $(this).data('number');
+                    var dollar = "$";
+                    var quantity = parseInt($(this).closest('.buy').find('.value').val());
+
+                    //Check whether the element is already on the list
+                    var cartElements = $('.shoppingCart').find('li');
+                    var alreadyAdded = false;
+                    var idx = 0;
+                    cartElements.each(function (index) {
+                        var id = $(this).attr('id');
+                        if(id == num.toString())
+                        {
+                            alreadyAdded = true;
+                            idx = index;
+                        }
+                    });
+
+                    var templateAux;
+                    if(!alreadyAdded)
+                    {
+                        templateAux = template.replace('##id##', num.toString());
+                        templateAux = templateAux.replace('##Q##', quantity.toString());
+                        templateAux = templateAux.replace('##N##', names[num]);
+                        templateAux = templateAux.replace('##P##', dollar + prices[num].toString());
+
+                        $('.totals').before(templateAux);
+
+                        //Add event handler to 'remove' button
+                        var removeButtons = $('.popbtn').find('a');
+                        removeButtons.each(function () {
+                            var removeButton = $(this);
+
+                            removeButton.on('click', function () {
+                                var element = $(this).closest('li');
+                                element.remove();
+
+                                //Compute total price
+                                //TODO: use a function
+                                var totalPrice = 0;
+                                cartElements = $('.shoppingCart').find('li');
+                                cartElements.each(function () {
+                                    var price;
+                                    var quantityAux;
+                                    if($(this).find('.quantity').size() > 0)
+                                    {
+                                        price = parseFloat($(this).find('.price').html().replace('$', ''));
+                                        quantityAux = parseInt($(this).find('.quantity').html());
+
+                                        totalPrice += price*quantityAux;
+                                    }
+                                });
+
+                                cartElements.last().find('.price').html(dollar + totalPrice.toString());
+                            });
+                        });
+
+                    } else
+                    {
+                        var oldQuantity = parseInt($(cartElements.get(idx)).find('.quantity').html());
+                        var newQuantity = oldQuantity + quantity;
+                        $(cartElements.get(idx)).find('.quantity').html(newQuantity.toString());
+                    }
+
+                    //Compute total price
+                    //TODO: use a function
+                    var totalPrice = 0;
+                    cartElements = $('.shoppingCart').find('li');
+                    cartElements.each(function () {
+                       var price;
+                       var quantityAux;
+                       if($(this).find('.quantity').size() > 0)
+                       {
+                           price = parseFloat($(this).find('.price').html().replace('$', ''));
+                           quantityAux = parseInt($(this).find('.quantity').html());
+
+                           totalPrice += price*quantityAux;
+                       }
+                    });
+
+                    cartElements.last().find('.price').html(dollar + totalPrice.toString());
+                });
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="top" class="header">
+        <div class="text-vertical-center">
+            <div style="background-color: rgba(0,0,0,0.55); color: red;">
+                <h1>Concesionario</h1>
+                <h3>Porsche - BMW - Mercedes</h3>
+                <br>
+                <a href="#models" class="btn btn-dark btn-lg">Ver Modelos</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Models -->
+    <div class="container" id="models">
+        <div class="row">
+            <div class="col-md-4 mainPicture">
+                <img src="img/porsche4.jpg" width="100%" height="225">
+            </div>
+
+            <div class="col-md-4 mainPicture">
+                <img src="img/BMW2.jpg" width="100%" height="225">
+            </div>
+
+            <div class="col-md-4 mainPicture">
+                <img src="img/Mercedes4.jpg" width="100%" height="225">
+            </div>
+        </div>
+
+        <div class="cd-tabs">
+            <nav>
+                <ul class="cd-tabs-navigation">
+                    <li><a data-content="gallery" href="#0">Imágenes</a></li>
+                    <li><a data-content="info" href="#0">Descripción</a></li>
+                    <li><a data-content="store" href="#0">Comprar</a></li>
+                </ul>
+            </nav>
+
+            <ul class="cd-tabs-content">
+                <li data-content="gallery">
+                    <div class="pictures">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <img src="img/porsche3.jpg" class="bigPicture" width="100%" height="330px">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 col-md-offset-3">
+                                <div class="col-md-4">
+                                    <img src="img/porsche3.jpg" class="smallPicture" width="100%" height="75px">
+                                </div>
+                                <div class="col-md-4">
+                                    <img src="img/porsche2.jpg" class="smallPicture" width="100%" height="75px">
+                                </div>
+                                <div class="col-md-4">
+                                    <img src="img/porsche1.jpg" class="smallPicture" width="100%" height="75px">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pictures">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <img src="img/BMW3.jpg" class="bigPicture" width="100%" height="330px">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 col-md-offset-3">
+                                <div class="col-md-4">
+                                    <img src="img/BMW3.jpg" class="smallPicture" width="100%" height="75px">
+                                </div>
+                                <div class="col-md-4">
+                                    <img src="img/BMW1.jpeg" class="smallPicture" width="100%" height="75px">
+                                </div>
+                                <div class="col-md-4">
+                                    <img src="img/BMW4.jpg" class="smallPicture" width="100%" height="75px">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pictures">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <img src="img/Mercedes1.jpg" class="bigPicture" width="100%" height="330px">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 col-md-offset-3">
+                                <div class="col-md-4">
+                                    <img src="img/Mercedes1.jpg" class="smallPicture" width="100%" height="75px">
+                                </div>
+                                <div class="col-md-4">
+                                    <img src="img/Mercedes2.jpg" class="smallPicture" width="100%" height="75px">
+                                </div>
+                                <div class="col-md-4">
+                                    <img src="img/Mercedes3.jpg" class="smallPicture" width="100%" height="75px">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li data-content="info">
+                    <div class="description">
+                        <p>El Porsche Panamera es una berlina de lujo que transmite unas sensaciones deportivas poco usuales en este tipo de coches. Es extraordinario por su equilibrio entre carácter deportivo y comodidad de marcha. No es la berlina de más 5,00 metros más cómoda del mercado, aunque es muy cómoda, pero sí puede ser la mejor para disfrutar conduciendo rápido.</p>
+
+                        <p>Tiene una carrocería de cinco puertas y un habitáculo para cuatro personas. Está disponible desde 102 021 € con la carrocería de longitud estándar (5,05 metros y 2,95 m de batalla; listado de precios) y desde 114 710 € con la larga (llamada Executive, mide 5,20 m y tiene 3,10 m de batalla; listado de precios del Panamera Executive). Todos los Panamera, salvo el Diesel, están disponibles con ambas longitudes de carrocería y todos tienen un cambio automático de doble embrague (PDK) de ocho velocidades.</p>
+                    </div>
+
+                    <div class="description">
+                        <p>El BMW M6 E63 / E64 fue anunciado en diciembre de 2004 y presentado oficialmente en el Salón del Automóvil de Ginebra de 2005. Incorpora el motor de gasolina V10 de cinco litros del BMW M5, con una potencia máxima de 507 CV (373 kW), un par motor máximo de 384 kg·m (521 N·m), y una caja de cambios SMG III de siete velocidades. Se ofrece en versiones cupé y descapotable, denominadas internamente E63 y E64 respectivamente.</p>
+
+                        <p>El M6 E63/E64 acelera de 0 a 100 km/h en 4,6 segundos y tiene una velocidad máxima electrónicamente limitada de 250 km/h. Sin limitador, el M6 puede superar los 300 km/h. Algunas pruebas de revistas especializadas han demostrado que el M6 puede acelerar de 0 a 99,6 km/h en 4,1 s.</p>
+                    </div>
+
+                    <div class="description">
+                        <p>Tras su lanzamiento en 2011, el actual Mercedes CLS ha sido sometido a una importante actualización que ha afectado tanto a la berlina de cuatro puertas como a la variante familiar de cinco, denominada CLS Shooting Brake. Recibe un nuevo frontal con unos nuevos grupos ópticos de alta tecnología LED High Performance. Como alternativa se ofrecen opcionalmente los nuevos faros Multibeam LED. Éstos dan la bienvenida al conductor iluminándose en color azul cuando éste activa la apertura del vehículo.</p>
+
+                        <p>En el exterior, la característica forma de sedán con estética de coupé se mantiene intacta y únicamente el frontal recibe una puesta a punto en términos de diseño. La nueva parrilla, sello de identidad de los Mercedes más modernos, y un nuevo paragolpes son su carta de presentación en la parte delantera. Pero sin duda lo más representativo de este nuevo modelo son sus nuevos faros LED, a los que la marca denomina Multibeam LED, que confieren al Mercedes CLS una mirada más intensa y están compuestos cada uno por 24 ledes que se pueden controlar de forma individual, lo que garantiza un haz de luz limpio y uniforme.</p>
+
+                        <p>En el interior del Mercedes CLS 2016 apenas se encuentran cambios en cuanto a diseño. Quizás la novedad más importante es la incorporación de una nueva pantalla de 8 pulgadas ya conocida en otros modelos de la marca, como por ejemplo el Mercedes Clase A. También recibe un nuevo volante deportivo de tres radios y se ha intentado mejorar el aspecto y el tacto de los materiales. Cuenta con más posibilidades de colores en el interior, nuevos tipos de inserciones están disponibles para elegir, y además, el programa de cuero Exclusive Passion, ofrece mayores niveles de personalización.</p>
+                    </div>
+                </li>
+
+                <li data-content="store">
+                    <div class="buy">
+                        <div class="row">
+                            <div class="col-md-3 col-md-offset-4"><p>Porsche Panamera</p></div>
+                            <input class="value" type="number" min="1" style="width: 6%; color: black;" value="1">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-4">
+                                <button type="button" class="btn-lg btn-success buyButton" data-number="0" style="width: 100%;">Añadir al carrito</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="buy">
+                        <div class="row">
+                            <div class="col-md-3 col-md-offset-4"><p>BMW M6</p></div>
+                            <input class="value" type="number" min="1" style="width: 6%; color: black;" value="1">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-4">
+                                <button type="button" class="btn-lg btn-success buyButton" data-number="1" style="width: 100%;">Añadir al carrito</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="buy">
+                        <div class="row">
+                            <div class="col-md-3 col-md-offset-4"><p>Mercedes CLS</p></div>
+                            <input class="value" type="number" min="1" style="width: 6%; color: black;" value="1">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-4">
+                                <button type="button" class="btn-lg btn-success buyButton" data-number="2" style="width: 100%;">Añadir al carrito</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="#">Estado del pedido</a>
+            <div class="navbar-right">
+                <div class="container minicart"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container text-center">
+
+        <div class="col-md-5 col-sm-12">
+            <div class="bigcart"></div>
+            <h1>Carrito</h1>
+            <p>
+                En esta sección puede comprobar el estado de su pedido.
+            </p>
+        </div>
+
+        <div class="col-md-7 col-sm-12 text-left">
+            <ul class="shoppingCart">
+                <li class="row list-inline columnCaptions">
+                    <span>QTY</span>
+                    <span>ITEM</span>
+                    <span>Price</span>
+                </li>
+
+                <li class="row totals">
+                    <span class="itemName">Total:</span>
+                    <span class="price">$0</span>
+                    <span class="order"> <a class="text-center">ORDER</a></span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    </div>
+
+    <!-- Custom Theme JavaScript -->
+    <script>
+    // Scrolls to the selected menu item on the page
+    $(function() {
+        $('a[href*=#]:not([href=#],[data-toggle],[data-target],[data-slide])').click(function() {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                    return false;
+                }
+            }
+        });
+    });
+    //#to-top button appears after scrolling
+    var fixed = false;
+    $(document).scroll(function() {
+        if ($(this).scrollTop() > 250) {
+            if (!fixed) {
+                fixed = true;
+                // $('#to-top').css({position:'fixed', display:'block'});
+                $('#to-top').show("slow", function() {
+                    $('#to-top').css({
+                        position: 'fixed',
+                        display: 'block'
+                    });
+                });
+            }
+        } else {
+            if (fixed) {
+                fixed = false;
+                $('#to-top').hide("slow", function() {
+                    $('#to-top').css({
+                        display: 'none'
+                    });
+                });
+            }
+        }
+    });
+    </script>
+
+</body>
+
+</html>
