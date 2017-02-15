@@ -15,38 +15,51 @@ jQuery(document).ready(function($){
                 selectedContent = tabContentWrapper.find('li[data-content="'+selectedTab+'"]'),
                 slectedContentHeight = selectedContent.innerHeight();
 
-			if( !selectedItem.hasClass('selected') ) {
+            var models = $('.mainPicture');
 
-				tabItems.find('a.selected').removeClass('selected');
-				selectedItem.addClass('selected');
-				selectedContent.addClass('selected').siblings('li').removeClass('selected');
-
-			}
-
-			//Change 'Imágenes' and 'Descripción' tab contents
-            var pictures = tab.find('ul.cd-tabs-content').find('li[data-content="gallery"]').find('.pictures');
-            var descriptions = tab.find('ul.cd-tabs-content').find('li[data-content="info"]').find('.description');
-            var buy = tab.find('ul.cd-tabs-content').find('li[data-content="store"]').find('.buy');
-            pictures.hide();
-            descriptions.hide();
-            buy.hide();
-            var availableModels = $('.mainPicture');
-            var i = 0;
-            availableModels.each(function() {
-                var model = $(this);
-                if(model.hasClass('selected'))
-                {
-                    pictures.eq(i).show();
-                    descriptions.eq(i).show();
-                    buy.eq(i).show();
+            var modelSelected = false;
+            models.each(function () {
+                if($(this).hasClass('selected')) {
+                    modelSelected = true;
                 }
-                i++;
             });
 
-            //animate tabContentWrapper height when content changes
-            tabContentWrapper.animate({
-                'height': slectedContentHeight
-            }, 200);
+            if(modelSelected)
+			{
+                if( !selectedItem.hasClass('selected') ) {
+
+                    tabItems.find('a.selected').removeClass('selected');
+                    selectedItem.addClass('selected');
+                    selectedContent.addClass('selected').siblings('li').removeClass('selected');
+
+                }
+
+                //Change 'Imágenes' and 'Descripción' tab contents
+                var pictures = tab.find('ul.cd-tabs-content').find('li[data-content="gallery"]').find('.pictures');
+                var descriptions = tab.find('ul.cd-tabs-content').find('li[data-content="info"]').find('.description');
+                var buy = tab.find('ul.cd-tabs-content').find('li[data-content="store"]').find('.buy');
+                pictures.hide();
+                descriptions.hide();
+                buy.hide();
+                var availableModels = $('.mainPicture');
+                var i = 0;
+                availableModels.each(function() {
+                    var model = $(this);
+                    if(model.hasClass('selected'))
+                    {
+                        pictures.eq(i).show();
+                        descriptions.eq(i).show();
+                        buy.eq(i).show();
+                    }
+                    i++;
+                });
+
+                //animate tabContentWrapper height when content changes
+                slectedContentHeight = selectedContent.innerHeight();
+                tabContentWrapper.animate({
+                    'height': slectedContentHeight
+                }, 200);
+			}
 		});
 
 		//hide the .cd-tabs::after element when tabbed navigation has scrolled to the end (mobile version)

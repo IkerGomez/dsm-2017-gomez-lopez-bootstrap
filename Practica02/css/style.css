@@ -42,7 +42,7 @@ header h1 {
   font-size: 20px;
   font-size: 1.25rem;
 }
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 320px) {
   header {
     height: 200px;
     line-height: 225px;
@@ -98,7 +98,7 @@ header h1 {
   background: #f8f7ee;
   box-shadow: inset 0 -2px 3px rgba(203, 196, 130, 0.06);
 }
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 320px) {
   .cd-tabs::after {
     display: none;
   }
@@ -202,7 +202,7 @@ header h1 {
 .cd-tabs-navigation a[data-content='trash'].selected::before {
   background-position: -100px -20px;
 }
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 320px) {
   .cd-tabs-navigation {
     /* move the nav to the left on medium sized devices */
     width: 80px;
@@ -267,7 +267,7 @@ header h1 {
   color: #8493bf;
   margin-bottom: 2em;
 }
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 320px) {
   .cd-tabs-content {
     min-height: 480px;
   }
