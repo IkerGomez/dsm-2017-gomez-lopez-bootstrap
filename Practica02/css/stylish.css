@@ -321,3 +321,7 @@ span i:nth-child(2){
 .carousel-inner {
     height: 100%;
 }
+
+.mainPicture {
+    height: 100%;
+}
