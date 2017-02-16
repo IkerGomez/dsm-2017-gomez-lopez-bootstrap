@@ -78,8 +78,13 @@ hr.small {
 }
 
 /* Pictures */
+
+.mainPicture {
+    box-shadow: 1px 1px 1px grey;
+}
+
 .mainPicture.selected {
-    border: solid;
+    box-shadow: 4px 4px 4px grey;
 }
 
 .pic1 {
@@ -178,7 +183,7 @@ hr.small {
     position: relative;
     width: 100%;
     height: 100%;
-    background: url(../img/UPNA_9.jpg) no-repeat center center scroll;
+    background: url(../img/Foto_Principal.jpg) no-repeat center center scroll;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
@@ -212,7 +217,7 @@ hr.small {
     width: 100%;
     height: 400px;
     color: #fff;
-    background: url(../img/UPNA_8.jpg) no-repeat center center scroll;
+    /*background: url(../img/UPNA_8.jpg) no-repeat center center scroll;*/
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
