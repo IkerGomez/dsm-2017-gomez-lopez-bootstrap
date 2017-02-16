@@ -80,7 +80,7 @@
                     var bigPicture = img.closest('.pictures').find('.bigPicture');
                     var imgPath = img.attr('src');
                     bigPicture.attr('src', imgPath);
-                })
+                });
             });
 
             var buyButtons = $('.buyButton');
@@ -115,8 +115,8 @@
                     {
                         templateAux = template.replace('##id##', num.toString());
                         templateAux = templateAux.replace('##Q##', quantity.toString());
-                        templateAux = templateAux.replace('##N##', names[num]);
-                        templateAux = templateAux.replace('##P##', dollar + prices[num].toString());
+                        templateAux = templateAux.replace('##N##', names[num-1]);
+                        templateAux = templateAux.replace('##P##', dollar + prices[num-1].toString());
 
                         $('.totals').before(templateAux);
 
@@ -414,7 +414,7 @@
 
                         <div class="row">
                             <div class="col-xs-6 col-md-4 col-xs-offset-3 col-md-offset-4">
-                                <button type="button" class="btn-lg btn-success buyButton" data-number="0" style="width: 100%;">Añadir al carrito</button>
+                                <button type="button" class="btn-lg btn-success buyButton" data-number="1" style="width: 100%;">Añadir al carrito</button>
                             </div>
                         </div>
                     </div>
@@ -427,7 +427,7 @@
 
                         <div class="row">
                             <div class="col-xs-6 col-md-4 col-xs-offset-3 col-md-offset-4">
-                                <button type="button" class="btn-lg btn-success buyButton" data-number="1" style="width: 100%;">Añadir al carrito</button>
+                                <button type="button" class="btn-lg btn-success buyButton" data-number="2" style="width: 100%;">Añadir al carrito</button>
                             </div>
                         </div>
                     </div>
@@ -440,7 +440,7 @@
 
                         <div class="row">
                             <div class="col-xs-6 col-md-4 col-xs-offset-3 col-md-offset-4">
-                                <button type="button" class="btn-lg btn-success buyButton" data-number="2" style="width: 100%;">Añadir al carrito</button>
+                                <button type="button" class="btn-lg btn-success buyButton" data-number="3" style="width: 100%;">Añadir al carrito</button>
                             </div>
                         </div>
                     </div>
@@ -505,31 +505,6 @@
                 }
             }
         });
-    });
-    //#to-top button appears after scrolling
-    var fixed = false;
-    $(document).scroll(function() {
-        if ($(this).scrollTop() > 250) {
-            if (!fixed) {
-                fixed = true;
-                // $('#to-top').css({position:'fixed', display:'block'});
-                $('#to-top').show("slow", function() {
-                    $('#to-top').css({
-                        position: 'fixed',
-                        display: 'block'
-                    });
-                });
-            }
-        } else {
-            if (fixed) {
-                fixed = false;
-                $('#to-top').hide("slow", function() {
-                    $('#to-top').css({
-                        display: 'none'
-                    });
-                });
-            }
-        }
     });
     </script>
 
