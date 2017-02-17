@@ -80,11 +80,11 @@ hr.small {
 /* Pictures */
 
 .mainPicture {
-    box-shadow: 1px 1px 1px grey;
+    opacity: 0.55;
 }
 
 .mainPicture.selected {
-    box-shadow: 4px 4px 4px grey;
+    opacity: 1.0;
 }
 
 .pic1 {
