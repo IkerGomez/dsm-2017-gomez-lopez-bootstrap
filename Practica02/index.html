@@ -64,22 +64,44 @@
                         selectedItem.addClass('selected');
                     }
 
-                    var tabs = $('.cd-tabs');
-                    var tabItems = tabs.find('ul.cd-tabs-navigation').find('li');
-                    var tabActive = false;
-                    tabItems.each(function () {
-                        var selectedItem = $(this).find('a');
-                        if(selectedItem.hasClass('selected'))
+                    //Change tab contents
+                    var details = $('.card');
+                    details.hide();
+
+                    var tabContents = details.find('.tab-pane');
+                    var tabs = details.find('.nav-tabs').find('li');
+
+                    tabContents.each(function () {
+                       if($(this).hasClass('active'))
+                       {
+                           $(this).removeClass('active');
+                       }
+                    });
+
+                    tabs.each(function () {
+                        if($(this).hasClass('active'))
                         {
-                            selectedItem.click();
-                            tabActive = true;
+                            $(this).removeClass('active');
                         }
                     });
 
-                    if(!tabActive)
-                    {
-                        tabItems.first().find('a').click();
-                    }
+                    var availableModels = $('.mainPicture');
+                    var i = 0;
+                    availableModels.each(function() {
+                        var model = $(this);
+                        if(model.hasClass('selected'))
+                        {
+                            var tabContent = details.find('.tab-pane').eq(i*3);
+                            var tab = details.find('.nav-tabs').eq(i).find('li').eq(0);
+                            if(!tabContent.hasClass('active'))
+                            {
+                                tabContent.addClass('active');
+                                tab.addClass('active');
+                            }
+                            details.eq(i).show();
+                        }
+                        i++;
+                    });
                 });
             });
 
@@ -94,7 +116,7 @@
                     var bigPicture = img.closest('.pictures').find('.bigPicture');
                     var imgPath = img.attr('src');
                     bigPicture.attr('src', imgPath);
-                })
+                });
             });
 
             var buyButtons = $('.buyButton');
@@ -228,7 +250,7 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" style="display: none">
             <!-- Titulos Pestañas -->
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#home1" aria-controls="home" role="tab" data-toggle="tab">Imágenes</a></li>
@@ -237,8 +259,8 @@
             </ul>
             <!-- Contenido Pestañas -->
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane" id="home1">
-                    <div id="myCarousel1" class="carousel slide">
+                <div role="tabpanel" class="tab-pane row" id="home1">
+                    <div id="myCarousel1" class="carousel slide col-xs-12 col-md-8 col-md-offset-2">
                         <!-- Indicators -->
                         <ol class="carousel-indicators">
                             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -263,10 +285,10 @@
                         </div>
 
                         <!-- Controls -->
-                        <a class="left carousel-control" href="#myCarousel1" data-slide="prev">
+                        <a class="left carousel-control" style="margin-left: 15px;" href="#myCarousel1" data-slide="prev">
                             <span class="icon-prev"></span>
                         </a>
-                        <a class="right carousel-control" href="#myCarousel1" data-slide="next">
+                        <a class="right carousel-control" style="margin-right: 15px;" href="#myCarousel1" data-slide="next">
                             <span class="icon-next"></span>
                         </a>
 
@@ -280,12 +302,12 @@
                 </div>
                 <div role="tabpanel" class="tab-pane" id="messages1">
                     <div class="buy"> 
-                        <div class="row"> 
-                            <div class="col-xs-5 col-md-3 col-xs-offset-3 col-md-offset-4"><p>Porsche Panamera</p></div> 
-                            <input class="value" type="number" min="1" style="width: 6%; color: black;" value="1"> 
+                        <div class="row col-sm-offset-3 col-sm-6"> 
+                            <div class="col-xs-4 col-sm-6 col-xs-offset-3 col-sm-offset-2"><p>Porsche Panamera</p></div> 
+                            <input class="value" type="number" min="1" style="width: 12.5%; color: black;" value="1"> 
                         </div>  
                         <div class="row"> 
-                            <div class="col-xs-6 col-md-4 col-xs-offset-3 col-md-offset-4"> 
+                            <div class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4 text-center"> 
                                 <button type="button" class="btn-lg btn-success buyButton" data-number="0" style="width: 100%;">Añadir al carrito</button> 
                             </div> 
                         </div> 
@@ -294,7 +316,7 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" style="display: none">
             <!-- Titulos Pestañas -->
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#home2" aria-controls="home" role="tab" data-toggle="tab">Imágenes</a></li>
@@ -303,8 +325,8 @@
             </ul>
             <!-- Contenido Pestañas -->
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane" id="home2">
-                    <div id="myCarousel2" class="carousel slide">
+                <div role="tabpanel" class="tab-pane row" id="home2">
+                    <div id="myCarousel2" class="carousel slide col-xs-12 col-md-8 col-md-offset-2">
                         <!-- Indicators -->
                         <ol class="carousel-indicators">
                             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -329,10 +351,10 @@
                         </div>
 
                         <!-- Controls -->
-                        <a class="left carousel-control" href="#myCarousel2" data-slide="prev">
+                        <a class="left carousel-control" style="margin-left: 15px;" href="#myCarousel2" data-slide="prev">
                             <span class="icon-prev"></span>
                         </a>
-                        <a class="right carousel-control" href="#myCarousel2" data-slide="next">
+                        <a class="right carousel-control" style="margin-right: 15px;" href="#myCarousel2" data-slide="next">
                             <span class="icon-next"></span>
                         </a>
 
@@ -347,12 +369,12 @@
                 </div>
                 <div role="tabpanel" class="tab-pane" id="messages2">
                     <div class="buy"> 
-                        <div class="row"> 
-                            <div class="col-xs-5 col-md-3 col-xs-offset-3 col-md-offset-4"><p>BMW M6</p></div> 
-                            <input class="value" type="number" min="1" style="width: 6%; color: black;" value="1"> 
+                        <div class="row col-sm-offset-3 col-sm-6"> 
+                            <div class="col-xs-4 col-sm-6 col-xs-offset-3 col-sm-offset-2"><p>BMW M6</p></div> 
+                            <input class="value" type="number" min="1" style="width: 12.5%; color: black;" value="1"> 
                         </div>  
                         <div class="row"> 
-                            <div class="col-xs-6 col-md-4 col-xs-offset-3 col-md-offset-4"> 
+                            <div class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4 text-center"> 
                                 <button type="button" class="btn-lg btn-success buyButton" data-number="1" style="width: 100%;">Añadir al carrito</button> 
                             </div> 
                         </div> 
@@ -361,7 +383,7 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" style="display: none">
             <!-- Titulos Pestañas -->
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#home3" aria-controls="home" role="tab" data-toggle="tab">Imágenes</a></li>
@@ -370,8 +392,8 @@
             </ul>
             <!-- Contenido Pestañas -->
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane" id="home3">
-                    <div id="myCarousel3" class="carousel slide">
+                <div role="tabpanel" class="tab-pane row" id="home3">
+                    <div id="myCarousel3" class="carousel slide col-xs-12 col-md-8 col-md-offset-2">
                         <!-- Indicators -->
                         <ol class="carousel-indicators">
                             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -396,10 +418,10 @@
                         </div>
 
                         <!-- Controls -->
-                        <a class="left carousel-control" href="#myCarousel3" data-slide="prev">
+                        <a class="left carousel-control" style="margin-left: 15px;" href="#myCarousel3" data-slide="prev">
                             <span class="icon-prev"></span>
                         </a>
-                        <a class="right carousel-control" href="#myCarousel3" data-slide="next">
+                        <a class="right carousel-control" style="margin-right: 15px;" href="#myCarousel3" data-slide="next">
                             <span class="icon-next"></span>
                         </a>
 
@@ -416,12 +438,12 @@
                 </div>
                 <div role="tabpanel" class="tab-pane" id="messages3">
                     <div class="buy"> 
-                        <div class="row"> 
-                            <div class="col-xs-5 col-md-3 col-xs-offset-3 col-md-offset-4"><p>Mercedes CLS</p></div> 
-                            <input class="value" type="number" min="1" style="width: 6%; color: black;" value="1"> 
+                        <div class="row col-sm-offset-3 col-sm-6"> 
+                            <div class="col-xs-4 col-sm-6 col-xs-offset-3 col-sm-offset-2"><p>Mercedes CLS</p></div> 
+                            <input class="value" type="number" min="1" style="width: 12.5%; color: black;" value="1"> 
                         </div>  
                         <div class="row"> 
-                            <div class="col-xs-6 col-md-4 col-xs-offset-3 col-md-offset-4"> 
+                            <div class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4 text-center"> 
                                 <button type="button" class="btn-lg btn-success buyButton" data-number="2" style="width: 100%;">Añadir al carrito</button> 
                             </div> 
                         </div> 
