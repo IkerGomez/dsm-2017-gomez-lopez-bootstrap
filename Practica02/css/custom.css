@@ -2,10 +2,10 @@
 	General Styles
 -----------------------------------*/
 
-body{
+/*body{
 	font-size : 14px;
 	background-color: #f2f6f9;
-}
+}*/
 
 ul{
 	list-style-type: none;
@@ -20,7 +20,7 @@ a:hover {
 	Navbar
 -----------------------------------*/
 
-.minicart{
+/*.minicart{
 	background:url(../img/sprite.png);
 	background-position: -156px 11px;
 	background-repeat:no-repeat;
@@ -44,7 +44,7 @@ a:hover {
 
 .navbar-brand:hover{
 	color: #fff;
-}
+}*/
 
 /*-----------------------------------
 	Breadcrumb
@@ -68,11 +68,11 @@ a:hover {
 
 .breadcrumb{
 	margin-bottom: 100px;
-	background-color: #ffffff;
+	/*background-color: #ffffff;*/
 }
 
 .breadcrumbBox{
-	background-color: #ffffff;
+	/*background-color: #ffffff;*/
 	height: 100px;
 	margin-bottom: 100px;
 	padding-top: 32px;
@@ -110,14 +110,14 @@ a:hover {
 	text-align: justify;
 }
 
-.bigcart{
+/*.bigcart{
 	background:url(../img/sprite.png);
 	background-position: 0px 11px;
 	background-repeat:no-repeat;
 	width: 155px;
 	height: 120px;
 	margin:0 0 40px 60px;
-}
+}*/
 
 
 /*-----------------------------------
@@ -130,10 +130,10 @@ a:hover {
 }
 
 .row{
-	box-shadow: 0 1px 0 #e1e5e8;
+	/*box-shadow: 0 1px 0 #e1e5e8;*/
 	padding-bottom :0;
 	padding-left: 15px;
-	background-color: #ffffff;
+	/*background-color: #ffffff;*/
 	margin-bottom: 11px;
 }
 
@@ -145,11 +145,11 @@ a:hover {
 
 .columnCaptions{
 	color: #7e93a7;
-	font-size:12px;
+	font-size:18px;
 	text-transform: uppercase;
 	padding: 0;
 	box-shadow: 0 0 0;
-	background-color: #f2f6f9;
+	/*background-color: #f2f6f9;*/
 }
 
 .columnCaptions span:first-child{
@@ -188,11 +188,11 @@ a:hover {
 
 
 .popbtn{
-	background-color: #e6edf3;
+	/*background-color: #e6edf3;*/
 	margin-left: 25px;
 	height: 63px;
 	width: 40px;
-	padding: 32px 0 0 14px !important;
+	/*padding: 32px 0 0 14px !important;*/
 	float: right;
 	cursor: pointer;
 }
@@ -216,7 +216,7 @@ a:hover {
 /* Totals */
 
 .totals{
-	background-color: #f2f6f9;
+	/*background-color: #f2f6f9;*/
 }
 
 .totals span{
@@ -254,7 +254,7 @@ a:hover {
 	border-radius: 3px;
 	box-shadow: 0 0 1px 1px rgba(0,0,0,0.2);
 	border: 0;
-	background-color: #ffffff;
+	/*background-color: #ffffff;*/
 }
 
 .popover.bottom{
