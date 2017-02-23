@@ -1,0 +1,1 @@
+<?php header( 'Location: /1-api-mediastrem/index.html' ) ;  ?>
