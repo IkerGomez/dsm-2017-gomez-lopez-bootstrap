@@ -2,16 +2,16 @@
 // If secureTokenRetrieval is true then you should remove these two values.
 
 // Insecure method
-/*var xirsysConnect = {
+var xirsysConnect = {
 	secureTokenRetrieval : false,
 	data : {
-		channel : 'dsmroom',
+		channel : 'cannel1',
 		ident : 'cmartinezdemorentin',
-		secret : '1d9198ec-fa7a-11e6-b3ff-8ea033d8fb4d'
+		secret : '073c7a42-fa81-11e6-9bd6-ff4ec1b2c046'
 	}
-};*/
+};
 
-var xirsysConnect = {
+/*var xirsysConnect = {
 	secureTokenRetrieval : false,
 	data : {
 		domain : 'www.britxi.com',
@@ -21,7 +21,7 @@ var xirsysConnect = {
 		secret : '1d9198ec-fa7a-11e6-b3ff-8ea033d8fb4d',
 		secure : 0
 	}
-};
+};*/
 
 // Secure method
 /*var xirsysConnect = {
