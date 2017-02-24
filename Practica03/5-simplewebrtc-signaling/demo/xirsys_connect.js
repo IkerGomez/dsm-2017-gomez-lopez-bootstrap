@@ -6,8 +6,8 @@ var xirsysConnect = {
 	secureTokenRetrieval : false,
 	data : {
 		channel : 'channel1',
-		ident : 'markogalarza',
-		secret : '336a697a-eef7-11e6-a4ef-1394ae5277b9'
+		ident : 'cmartinezdemorentin',
+		secret : '1d9198ec-fa7a-11e6-b3ff-8ea033d8fb4d'
 	}
 };
 /*
@@ -34,4 +34,3 @@ var xirsysConnect = {
 		secure : 1
 	}
 };*/
-
