@@ -5,7 +5,7 @@
 var xirsysConnect = {
 	secureTokenRetrieval : false,
 	data : {
-		channel : 'cannel1',
+		channel : 'channel1',
 		ident : 'cmartinezdemorentin',
 		secret : '073c7a42-fa81-11e6-9bd6-ff4ec1b2c046'
 	}
