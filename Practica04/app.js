@@ -68,4 +68,41 @@ app.post('/formSubmit', parseUrlencoded, function(req,res)
         });
 });
 
+var product1Data = {
+    'Name' : 'Graphic Design',
+    'Description' : 'We provide the best graphic design for individual or corporate business purpose, also communication design, practice of palnning and projecting ideas and experiences with visual eye.',
+    'Image path' : 'images/graphic-design.png'
+};
+
+var product2Data = {
+    'Name' : 'Web development',
+    'Description' : 'We provide the best service with high-quality printing design and cost-effective printing for any business purpose.',
+    'Image path' : 'images/webdevelopment.png'
+};
+
+var product3Data = {
+    'Name' : 'Print Design',
+    'Description' : 'We provide the best service with high-quality printing design and cost-effective printing for any business purpose.',
+    'Image path' : 'images/printing.png'
+};
+
+app.get('/productData', function(req, res)
+{
+    switch(req.query.product)
+    {
+        case '1':
+            res.json(product1Data);
+            break;
+        case '2':
+            res.json(product2Data);
+            break;
+        case '3':
+            res.json(product3Data);
+            break;
+        default:
+            res.status(404).json('Selected product does not exist');
+            break;
+    }
+});
+
 app.listen(8080);
