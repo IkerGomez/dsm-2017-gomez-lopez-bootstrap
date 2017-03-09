@@ -2,7 +2,7 @@
   "name": "dsm-2017-gomez-lopez-bootstrap",
   "version": "1.0.0",
   "description": "",
-  "main": "Practica04/app.js",
+  "main": "app.js",
   "dependencies": {
     "body-parser": "^1.17.0",
     "express": "^4.14.1",
