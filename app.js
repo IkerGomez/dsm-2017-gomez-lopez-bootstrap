@@ -109,7 +109,15 @@ app.get('/productData', function(req, res)
 
 io.on('connection', function(client)
 {
-   console.log('Conexión entrante');
+   client.emit('bienvenida', {saludo: 'Bienvenido. Soy Skynet.'});
+
+   client.on('chatMessage', function(datos){
+       client.emit('chatResponse', datos);
+       client.broadcast.emit('chatResponse', datos);
+   });
+
 });
 
-app.listen(process.env.PORT||8080);
+server.listen(8080);
+
+//app.listen(process.env.PORT||8080);

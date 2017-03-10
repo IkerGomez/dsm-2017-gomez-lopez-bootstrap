@@ -20,7 +20,7 @@
 
     <style>
         .hide-menu{
-            margin-top: -106px;
+            margin-top: -159px;
         }
     </style>
 
@@ -31,6 +31,7 @@
         <ul>
             <a href="portada.html"><li>home</li></a>
             <a href="#what_we_do"><li>What We Do</li></a>
+            <a href="#timeline"><li>What We Do</li></a>
         </ul>
     </div>
 </div>
@@ -125,6 +126,22 @@
             </div>
         </div>
     </section>
+    <section id="timeline" class="subscribe section bg-img">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <p> Chat Timeline </p>
+                    <div id="timeline_content" class="col-sm-12 form-control" style="margin-bottom: 10px;vertical-align: middle; height: auto; padding: 6px 12px; width: 100%;"> </div>
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <div class="form-group" style="width: 100%;"> <input type="text" class="form-control" id="userMessage" placeholder="Write your message here...."> </div>
+                    </div>
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <button onclick="sendMessage()" type="submit" class="btn ubutia-btn" style="width: 100%;">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <footer class="footer">
         <div class="container">
             <div class="row">
@@ -141,6 +158,7 @@
 <script src="assets/js/owl.carousel.min.js"></script>
 <script src="assets/js/jquery.magnific-popup.js"></script>
 <script src="assets/js/script.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 
 <script>
     $('#product1').on('click', function()
@@ -174,6 +192,30 @@
     {
         $('#jsonRow').hide();
     });
+
+</script>
+
+<script>
+
+    $( document ).ready(function() {
+        socket = io.connect("http://localhost:8080");
+
+        socket.on('bienvenida', function(datos){
+            alert(datos.saludo);
+        });
+
+        socket.on('chatResponse', function(datos){
+            $('#timeline_content')[0].innerHTML = $('#timeline_content')[0].innerHTML + '<br /><br />' + datos.info;
+        });
+
+    });
+
+    function sendMessage(){
+        if($('#userMessage')[0].value != ""){
+            socket.emit('chatMessage', {info: $('#userMessage')[0].value});
+            $('#userMessage')[0].value = "";
+        }
+    }
 
 </script>
 
