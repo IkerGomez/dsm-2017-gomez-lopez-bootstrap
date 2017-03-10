@@ -7,6 +7,8 @@ var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
 var parseUrlencoded = bodyParser.urlencoded({ extended: false });
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -105,6 +107,9 @@ app.get('/productData', function(req, res)
     }
 });
 
-
+io.on('connection', function(client)
+{
+   console.log('Conexión entrante');
+});
 
 app.listen(process.env.PORT||8080);
