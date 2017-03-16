@@ -198,7 +198,7 @@
 <script>
 
     $( document ).ready(function() {
-        socket = io.connect("https://localhost");
+        socket = io();
 
         socket.on('bienvenida', function(datos){
             alert(datos.saludo);
