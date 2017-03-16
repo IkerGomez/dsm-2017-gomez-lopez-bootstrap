@@ -198,7 +198,7 @@
 <script>
 
     $( document ).ready(function() {
-        socket = io.connect("http://localhost:"+process.env.PORT);
+        socket = io.connect("http://localhost");
 
         socket.on('bienvenida', function(datos){
             alert(datos.saludo);
