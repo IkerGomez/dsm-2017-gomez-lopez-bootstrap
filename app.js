@@ -118,6 +118,6 @@ io.on('connection', function(client)
 
 });
 
-server.listen(8080);
+server.listen(process.env.PORT||8080);
 
 //app.listen(process.env.PORT||8080);
