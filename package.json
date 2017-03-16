@@ -1,7 +1,6 @@
 {
   "name": "dsm-2017-gomez-lopez-bootstrap",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "dependencies": {
     "body-parser": "^1.17.0",
@@ -22,5 +21,6 @@
   "bugs": {
     "url": "https://github.com/IkerGomez/dsm-2017-gomez-lopez-bootstrap/issues"
   },
-  "homepage": "https://github.com/IkerGomez/dsm-2017-gomez-lopez-bootstrap#readme"
+  "homepage": "https://github.com/IkerGomez/dsm-2017-gomez-lopez-bootstrap#readme",
+  "description": ""
 }
