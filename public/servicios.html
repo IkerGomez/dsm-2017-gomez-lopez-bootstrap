@@ -31,7 +31,7 @@
         <ul>
             <a href="portada.html"><li>home</li></a>
             <a href="#what_we_do"><li>What We Do</li></a>
-            <a href="#timeline"><li>What We Do</li></a>
+            <a href="#timeline"><li>Chat</li></a>
         </ul>
     </div>
 </div>
@@ -198,7 +198,7 @@
 <script>
 
     $( document ).ready(function() {
-        socket = io.connect("http://localhost:8080");
+        socket = io.connect("http://localhost:"+process.env.PORT);
 
         socket.on('bienvenida', function(datos){
             alert(datos.saludo);
