@@ -120,4 +120,6 @@ io.on('connection', function(client)
 
 server.listen(process.env.PORT||8080);
 
+console.log(process.env.PORT);
+
 //app.listen(process.env.PORT||8080);
