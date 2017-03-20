@@ -37,7 +37,7 @@ io.on('connection', function(client)
        client.emit('chatResponse', JSON.stringify(response));
 
        /* Send message to all the other users */
-       response.ownership = 'false';
+       response.ownership = false;
        client.broadcast.emit('chatResponse', JSON.stringify(response));
    });
 
