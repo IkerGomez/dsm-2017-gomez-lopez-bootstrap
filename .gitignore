@@ -1,10 +1,5 @@
 /node_modules
 *node*
 
-/Practica01
-/Practica02
-/Practica03
-/Practica03_v2
-
 .DS_Store
 .idea
