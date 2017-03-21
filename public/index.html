@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Estilo CSS para la Página -->
     <style>
@@ -69,7 +69,7 @@
             margin-top: 8px;
         }
         .people-list .about {
-            padding-left: 8px;
+            padding-left: 12px;
         }
         .people-list .status {
             color: #92959E;
@@ -172,10 +172,9 @@
             border-radius: 5px;
             resize: none;
         }
-        .chat .chat-message .fa-file-o, .chat .chat-message .fa-file-image-o {
+        .chat .chat-message {
             font-size: 16px;
             color: gray;
-            cursor: pointer;
         }
         .chat .chat-message button {
             float: right;
@@ -238,20 +237,23 @@
             margin-bottom: 10px;
             background-color: white;
             border-radius: 5px;
+            border: 1px solid #92beed;
         }
 
         .messageText {
             outline: none;
-            padding-top: 5px;
-            padding-bottom: 5px;
             margin: 10px;
-            height:100px;
+            height: 80px;
             overflow: scroll;
             font: 14px/22px "Lato", Arial, sans-serif;
             resize: none;
         }
         .messageText img {
             width: 20px;
+        }
+
+        .name span {
+            color: #92959E;
         }
 
     </style>
@@ -266,98 +268,19 @@
             <input type="text" placeholder="search">
             <i class="fa fa-search"></i>
         </div>
-        <ul class="list"><li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg" alt="avatar">
-            <div class="about">
-                <div class="name">Vincent Porter</div>
-                <div class="status">
-                    <i class="fa fa-circle online"></i> online
-                </div>
-            </div>
-        </li><li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_02.jpg" alt="avatar">
-            <div class="about">
-                <div class="name">Aiden Chavez</div>
-                <div class="status">
-                    <i class="fa fa-circle offline"></i> left 7 mins ago
-                </div>
-            </div>
-        </li><li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_03.jpg" alt="avatar">
-            <div class="about">
-                <div class="name">Mike Thomas</div>
-                <div class="status">
-                    <i class="fa fa-circle online"></i> online
-                </div>
-            </div>
-        </li><li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_04.jpg" alt="avatar">
-            <div class="about">
-                <div class="name">Erica Hughes</div>
-                <div class="status">
-                    <i class="fa fa-circle online"></i> online
-                </div>
-            </div>
-        </li><li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_05.jpg" alt="avatar">
-            <div class="about">
-                <div class="name">Ginger Johnston</div>
-                <div class="status">
-                    <i class="fa fa-circle online"></i> online
-                </div>
-            </div>
-        </li><li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_06.jpg" alt="avatar">
-            <div class="about">
-                <div class="name">Tracy Carpenter</div>
-                <div class="status">
-                    <i class="fa fa-circle offline"></i> left 30 mins ago
-                </div>
-            </div>
-        </li><li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_07.jpg" alt="avatar">
-            <div class="about">
-                <div class="name">Christian Kelly</div>
-                <div class="status">
-                    <i class="fa fa-circle offline"></i> left 10 hours ago
-                </div>
-            </div>
-        </li><li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_08.jpg" alt="avatar">
-            <div class="about">
-                <div class="name">Monica Ward</div>
-                <div class="status">
-                    <i class="fa fa-circle online"></i> online
-                </div>
-            </div>
-        </li><li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_09.jpg" alt="avatar">
-            <div class="about">
-                <div class="name">Dean Henry</div>
-                <div class="status">
-                    <i class="fa fa-circle offline"></i> offline since Oct 28
-                </div>
-            </div>
-        </li><li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_10.jpg" alt="avatar">
-            <div class="about">
-                <div class="name">Peyton Mckinney</div>
-                <div class="status">
-                    <i class="fa fa-circle online"></i> online
-                </div>
-            </div>
-        </li></ul>
+        <ul class="list">
+
+        </ul>
     </div>
 
     <div class="chat">
         <div class="chat-header clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01_green.jpg" alt="avatar">
+            <i class="fa fa-user-circle-o" aria-hidden="true" style="font-size: 45px; float: left;"></i>
 
             <div class="chat-about">
-                <div class="chat-with">Chat with Vincent Porter</div>
-                <div class="chat-num-messages">already 1 902 messages</div>
+                <div class="chat-with">Logged user</div>
+                <div class="chat-num-messages">Number of messages</div>
             </div>
-            <i class="fa fa-star"></i>
         </div>
 
         <div class="chat-history">
@@ -411,7 +334,7 @@
             <span class="message-data-name" >{{username}}</span> <i class="fa fa-circle me"></i>
         </div>
         <div class="message other-message float-right">
-            {{messageOutput}}
+            {{{messageOutput}}}
         </div>
     </li>
 </script>
@@ -424,6 +347,18 @@
         </div>
         <div class="message my-message">
             {{{response}}}
+        </div>
+    </li>
+</script>
+
+<script id="user-template" type="text/x-handlebars-template">
+    <li class="clearfix">
+        <i class="fa fa-user-circle-o" aria-hidden="true" style="margin-top: 5px; font-size: 45px; float: left;"></i>
+        <div class="about">
+            <div class="name">{{username}}</div>
+            <div class="status">
+                <i class="fa fa-circle online"></i> online
+            </div>
         </div>
     </li>
 </script>
@@ -452,10 +387,54 @@
                 this.$button = $('button');
                 this.$textarea = $('#message-to-send');
                 this.$chatHistoryList =  this.$chatHistory.find('ul');
+                this.$usersList =  $('.people-list').find('ul');
             },
             bindEvents: function() {
                 this.$button.on('click', this.addMessage.bind(this));
                 this.$textarea.on('keyup', this.addMessageEnter.bind(this));
+            },
+
+            addUser: function(username) {
+                var allUsers = this.$usersList.find($('.name'));
+
+                var alreadyAdded = false;
+
+                for(var i = 0; i < allUsers.length; i++)
+                {
+                    if (allUsers[i].innerText.search(username) !== -1) {
+                        alreadyAdded = true;
+                    }
+                }
+
+                if(!alreadyAdded)
+                {
+                    var template;
+                    var context;
+
+                    template = Handlebars.compile( $("#user-template").html());
+                    context = {
+                        username: username
+                    };
+                    this.$usersList.append(template(context));
+
+                    /* Update the search filer, so new user is indexed */
+                    searchFilter.init();
+                }
+            },
+
+            removeUser: function(username) {
+                var allUsers = this.$usersList.find($('.name'));
+
+                for(var i = 0; i < allUsers.length; i++)
+                {
+                    if (allUsers[i].innerText.search(username) !== -1) {
+                        /* Remove user from the list */
+                        $(allUsers[i]).closest("li").remove();
+                    }
+                }
+
+                /* Update the search filer */
+                searchFilter.init();
             },
 
             render: function(data) {
@@ -487,9 +466,7 @@
                         }
                     }
 
-
-
-                    if(!data.ownership)
+                    if(data.ownership)
                     {
                         template = Handlebars.compile( $("#message-template").html());
                         context = {
@@ -558,6 +535,43 @@
                 socket.emit('chatMessage', userData);
             },
 
+            setUserTyping: function(username) {
+                var allUsers = this.$usersList.find($('.name'));
+
+                for(var i = 0; i < allUsers.length; i++)
+                {
+                    if (allUsers[i].innerText.search(username) !== -1) {
+
+                        var spanNode = allUsers[i].getElementsByTagName('span');
+
+                        if(spanNode.length == 0)
+                        {
+                            var typingNode = document.createElement("SPAN");
+                            typingNode.innerHTML = " | typing...";
+
+                            allUsers[i].appendChild(typingNode);
+                        }
+                    }
+                }
+            },
+
+            unsetUserTyping: function(username) {
+                var allUsers = this.$usersList.find($('.name'));
+
+                for(var i = 0; i < allUsers.length; i++)
+                {
+                    if (allUsers[i].innerText.search(username) !== -1) {
+
+                        var spanNode = allUsers[i].getElementsByTagName('span');
+
+                        if(spanNode.length == 1)
+                        {
+                            $(spanNode).remove();
+                        }
+                    }
+                }
+            },
+
             // Función para enviar cuando se pulse la tecla de Intro:
             addMessageEnter: function(event) {
                 if (event.keyCode === 13) {
@@ -574,7 +588,7 @@
             getCurrentTime: function() {
                 return new Date().toLocaleTimeString().
                 replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3");
-            },
+            }
         };
 
         chat.init();
@@ -605,6 +619,10 @@
 
 <script>
     $(document).ready(function() {
+
+        chat.addUser("Cristian MMS");
+        chat.addUser("Iker Gómez");
+
         socket = io();
 
         socket.on('chatResponse', function(datos){
@@ -612,6 +630,12 @@
 
             /* Add received message to the timeline */
             chat.render(response);
+        });
+
+        //TODO
+        socket.on('userAdded', function(username){
+            /* Add new user to the list */
+            chat.addUser(username);
         });
 
     });
