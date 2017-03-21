@@ -33,13 +33,12 @@
         }
 
         .people-list {
-            width: 25vw;
             height: 100vh;
             float: left;
             overflow-y: scroll;
         }
         .people-list .search {
-            padding: 20px;
+            padding: 20px 0 20px 20px;
         }
         .people-list input {
             border-radius: 3px;
@@ -47,7 +46,7 @@
             padding: 14px;
             color: white;
             background: #6A6C75;
-            width: 90%;
+            width: 88%;
             font-size: 14px;
         }
         .people-list .fa-search {
@@ -55,7 +54,7 @@
             left: -25px;
         }
         .people-list ul {
-            padding: 20px;
+            padding: 20px 0 20px 20px;
             height: 770px;
         }
         .people-list ul li {
@@ -70,13 +69,15 @@
         }
         .people-list .about {
             padding-left: 12px;
+            text-overflow: ellipsis;
+            max-width: 68%;
+            white-space: nowrap;
         }
         .people-list .status {
             color: #92959E;
         }
 
         .chat {
-            width: 75vw;
             height: 100vh;
             overflow-y: scroll;
             float: left;
@@ -152,6 +153,7 @@
         }
         .chat .chat-history .other-message {
             background: #94C2ED;
+            word-wrap: break-word;
         }
         .chat .chat-history .other-message:after {
             border-bottom-color: #94C2ED;
@@ -159,8 +161,6 @@
         }
         .chat .chat-message {
             padding: 30px;
-            position: absolute;
-            width: 75vw;
             bottom: 0;
         }
         .chat .chat-message textarea {
@@ -263,68 +263,71 @@
 <body translate="no">
 
 <div class="container clearfix">
-    <div class="people-list" id="people-list">
-        <div class="search">
-            <input type="text" placeholder="search">
-            <i class="fa fa-search"></i>
-        </div>
-        <ul class="list">
-
-        </ul>
-    </div>
-
-    <div class="chat">
-        <div class="chat-header clearfix">
-            <i class="fa fa-user-circle-o" aria-hidden="true" style="font-size: 45px; float: left;"></i>
-
-            <div class="chat-about">
-                <div class="chat-with">Logged user</div>
-                <div class="chat-num-messages">Number of messages</div>
+    <div class="row">
+        <div class="people-list col-sm-3 hidden-xs" id="people-list">
+            <div class="search">
+                <input type="text" placeholder="search">
+                <i class="fa fa-search"></i>
             </div>
-        </div>
-
-        <div class="chat-history">
-            <!-- Chat messages are appended to this list -->
-            <ul>
+            <ul class="list">
 
             </ul>
-
         </div>
 
-        <div class="chat-message clearfix">
+        <div class="chat col-sm-9 col-xs-12">
+            <div class="chat-header clearfix">
+                <i class="fa fa-user-circle-o" aria-hidden="true" style="font-size: 45px; float: left;"></i>
 
-            <div id="text_wrapper">
-                <div id="message-to-send" class="messageText" contenteditable="true"></div>
+                <div class="chat-about">
+                    <div class="chat-with">Logged user</div>
+                    <div class="chat-num-messages">Number of messages</div>
+                </div>
+
+                <i class="fa fa-bars visible-xs" aria-hidden="true" style="float: right; font-size: 30px; cursor: pointer; margin-top: 9px;"></i>
             </div>
 
-            <div class="row">
-                <div class="col-xs-10 col-sm-8 col-md-6 col-lg-4">
-                    <div class="col-xs-1" style="padding: 0px; margin-right: 5px;">
-                        <img src="/images/emoji1.png" class="emoji" data-num="0" width="25px">
+            <div class="chat-history">
+                <!-- Chat messages are appended to this list -->
+                <ul>
+
+                </ul>
+
+            </div>
+
+            <div class="chat-message clearfix col-xs-12">
+
+                <div id="text_wrapper">
+                    <div id="message-to-send" class="messageText" contenteditable="true"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-10 col-sm-8 col-md-6 col-lg-4">
+                        <div class="col-xs-1" style="padding: 0px; margin-right: 5px;">
+                            <img src="/images/emoji1.png" class="emoji" data-num="0" width="25px">
+                        </div>
+                        <div class="col-xs-1" style="padding: 0px; margin-right: 5px;">
+                            <img src="/images/emoji2.png" class="emoji" data-num="1" width="25px">
+                        </div>
+                        <div class="col-xs-1" style="padding: 0px; margin-right: 5px;">
+                            <img src="/images/emoji3.png" class="emoji" data-num="2" width="25px">
+                        </div>
+                        <div class="col-xs-1" style="padding: 0px; margin-right: 5px;">
+                            <img src="/images/emoji4.png" class="emoji" data-num="3" width="25px">
+                        </div>
+                        <div class="col-xs-1" style="padding: 0px; margin-right: 5px;">
+                            <img src="/images/emoji5.png" class="emoji" data-num="4" width="25px">
+                        </div>
                     </div>
-                    <div class="col-xs-1" style="padding: 0px; margin-right: 5px;">
-                        <img src="/images/emoji2.png" class="emoji" data-num="1" width="25px">
-                    </div>
-                    <div class="col-xs-1" style="padding: 0px; margin-right: 5px;">
-                        <img src="/images/emoji3.png" class="emoji" data-num="2" width="25px">
-                    </div>
-                    <div class="col-xs-1" style="padding: 0px; margin-right: 5px;">
-                        <img src="/images/emoji4.png" class="emoji" data-num="3" width="25px">
-                    </div>
-                    <div class="col-xs-1" style="padding: 0px; margin-right: 5px;">
-                        <img src="/images/emoji5.png" class="emoji" data-num="4" width="25px">
+
+                    <div class="col-xs-2 col-sm-4 col-md-6 col-lg-8">
+                        <button>Send</button>
                     </div>
                 </div>
 
-                <div class="col-xs-2 col-sm-4 col-md-6 col-lg-8">
-                    <button>Send</button>
-                </div>
             </div>
 
         </div>
-
     </div>
-
 </div>
 
 <script id="message-template" type="text/x-handlebars-template">
@@ -353,10 +356,10 @@
 
 <script id="user-template" type="text/x-handlebars-template">
     <li class="clearfix">
-        <i class="fa fa-user-circle-o" aria-hidden="true" style="margin-top: 5px; font-size: 45px; float: left;"></i>
+        <i class="fa fa-user-circle-o" aria-hidden="true" style="margin-top: 5px; font-size: 45px; float: left; padding: 0;"></i>
         <div class="about">
-            <div class="name">{{username}}</div>
-            <div class="status">
+            <div class="name" style="text-overflow: ellipsis; overflow: hidden;">{{username}}</div>
+            <div class="status" style="text-overflow: ellipsis; overflow: hidden;">
                 <i class="fa fa-circle online"></i> online
             </div>
         </div>
@@ -542,14 +545,16 @@
                 {
                     if (allUsers[i].innerText.search(username) !== -1) {
 
-                        var spanNode = allUsers[i].getElementsByTagName('span');
+                        var statusNode = $(allUsers[i]).parent().find($('.status'));
+
+                        var spanNode = statusNode.find('span');
 
                         if(spanNode.length == 0)
                         {
                             var typingNode = document.createElement("SPAN");
-                            typingNode.innerHTML = " | typing...";
+                            typingNode.innerHTML = "| typing...";
 
-                            allUsers[i].appendChild(typingNode);
+                            statusNode.append($(typingNode));
                         }
                     }
                 }
@@ -562,7 +567,9 @@
                 {
                     if (allUsers[i].innerText.search(username) !== -1) {
 
-                        var spanNode = allUsers[i].getElementsByTagName('span');
+                        var statusNode = $(allUsers[i]).parent().find($('.status'));
+
+                        var spanNode = statusNode.find('span');
 
                         if(spanNode.length == 1)
                         {
