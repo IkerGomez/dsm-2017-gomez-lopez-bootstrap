@@ -46,7 +46,7 @@
             padding: 14px;
             color: white;
             background: #6A6C75;
-            width: 88%;
+            width: 75%;
             font-size: 14px;
         }
         .people-list .fa-search {
@@ -264,10 +264,12 @@
 
 <div class="container clearfix">
     <div class="row">
-        <div class="people-list col-sm-3 hidden-xs" id="people-list">
+        <div class="people-list col-sm-3 col-xs-12" id="people-list">
             <div class="search">
                 <input type="text" placeholder="search">
                 <i class="fa fa-search"></i>
+
+                <i class="fa fa-times visible-xs" aria-hidden="true" style="float: right;font-size: 48px;cursor: pointer;margin-top: 0;margin-right: 20px;"></i>
             </div>
             <ul class="list">
 
@@ -283,7 +285,7 @@
                     <div class="chat-num-messages">Number of messages</div>
                 </div>
 
-                <i class="fa fa-bars visible-xs" aria-hidden="true" style="float: right; font-size: 30px; cursor: pointer; margin-top: 9px;"></i>
+                <i class="fa fa-users visible-xs" aria-hidden="true" style="float: right; font-size: 30px; cursor: pointer; margin-top: 9px;"></i>
             </div>
 
             <div class="chat-history">
@@ -391,6 +393,7 @@
                 this.$textarea = $('#message-to-send');
                 this.$chatHistoryList =  this.$chatHistory.find('ul');
                 this.$usersList =  $('.people-list').find('ul');
+                this.$list = $('.people-list');
             },
             bindEvents: function() {
                 this.$button.on('click', this.addMessage.bind(this));
@@ -627,6 +630,36 @@
 <script>
     $(document).ready(function() {
 
+        /* Save window size */
+        smallWindow = false;
+        if($(window).width() < 768)
+        {
+            smallWindow = true;
+            if(chat.$list.is(":visible"))
+            {
+                chat.$list.hide();
+            }
+        }
+
+        $(window).resize(function() {
+            if($(window).width() < 768 && !smallWindow)
+            {
+                smallWindow = true;
+                if(chat.$list.is(":visible"))
+                {
+                    chat.$list.hide();
+                }
+            } else if($(window).width() >= 768 && smallWindow)
+            {
+                smallWindow = false;
+                if(!chat.$list.is(":visible"))
+                {
+                    chat.$list.show();
+                }
+            }
+        });
+
+        //TODO: remove
         chat.addUser("Cristian MMS");
         chat.addUser("Iker Gómez");
 
@@ -643,6 +676,22 @@
         socket.on('userAdded', function(username){
             /* Add new user to the list */
             chat.addUser(username);
+        });
+
+        var collapsedMenu = $('.chat-header').find('.fa-users');
+        collapsedMenu.on('click', function () {
+            if(!chat.$list.is(":visible"))
+            {
+                chat.$list.show(400);
+            }
+        });
+
+        var listRemove = $('.search').find('.fa-times');
+        listRemove.on('click', function () {
+            if(chat.$list.is(":visible"))
+            {
+                chat.$list.hide(400);
+            }
         });
 
     });
