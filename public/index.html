@@ -55,7 +55,6 @@
         }
         .people-list ul {
             padding: 20px 0 20px 20px;
-            height: 770px;
         }
         .people-list ul li {
             padding-bottom: 20px;
@@ -269,7 +268,7 @@
                 <input type="text" placeholder="search">
                 <i class="fa fa-search"></i>
 
-                <i class="fa fa-times visible-xs" aria-hidden="true" style="float: right;font-size: 48px;cursor: pointer;margin-top: 0;margin-right: 20px;"></i>
+                <img src="/images/close.png" class="visible-xs" style="float: right;cursor: pointer;margin-top: 12px;margin-right: 20px;width: 30px;">
             </div>
             <ul class="list">
 
@@ -672,7 +671,6 @@
             chat.render(response);
         });
 
-        //TODO
         socket.on('userAdded', function(username){
             /* Add new user to the list */
             chat.addUser(username);
@@ -686,7 +684,7 @@
             }
         });
 
-        var listRemove = $('.search').find('.fa-times');
+        var listRemove = $('.search').find('img');
         listRemove.on('click', function () {
             if(chat.$list.is(":visible"))
             {
