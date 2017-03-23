@@ -262,20 +262,21 @@
 <body translate="no">
 
 <div id="myModal" class="modal fade" data-keyboard="false" data-backdrop="static" role="dialog">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog">
 
         <!-- Modal content-->
         <div class="modal-content" style="color: rgb(68,71,83);">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Bienvenido al chat!</h4>
+                <h4 class="modal-title">Welcome!</h4>
             </div>
             <div class="modal-body">
-                <!--<p>Introduce tu nombre de usuario:</p>-->
-                <input type="text" id="inputname" placeholder="Introduce tu nombre de usuario..." style="width: 100%; text-align: center;">
+                <input type="text" id="inputname" placeholder="Type your user name..." style="width: 100%; text-align: center;">
+                <div id="alreadyConnected" style="color: red;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Your evil twin is already connected! Tell your mother to change your name.</div>
+                <div id="chatFull" style="color: red"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> The chat is bursting. People fall by the sides.</div>
+                <div id="fieldEmpty" style="color: red"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> We got it! you need to go to the ophthalmologist. You can not leave the field empty. </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="modalButton" class="btn btn-default" data-dismiss="modal">Entrar</button>
+                <button type="button" id="modalButton" class="btn btn-default">Entrar</button>
             </div>
         </div>
 
@@ -407,7 +408,7 @@
 <!-- Handlebars -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.0/handlebars.min.js"></script>
 <!-- List -->
-<script src="http://cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
 <!-- Sockets -->
 <script src="/socket.io/socket.io.js"></script>
 
@@ -688,6 +689,11 @@
 <script>
     $(document).ready(function() {
 
+        /* Hide error messages */
+        $('#alreadyConnected').hide();
+        $('#chatFull').hide();
+        $('#fieldEmpty').hide();
+
         /* Save window size */
         smallWindow = false;
         if($(window).width() < 768)
@@ -730,6 +736,8 @@
         });
 
         socket.on('userAdded', function(username){
+            $('#myModal').modal('hide');
+
             /* Add new user to the list */
             chat.addUser(username);
 
@@ -763,13 +771,15 @@
         });
 
         socket.on('alreadyConnected', function(){
-            //TODO
-            console.log("El usuario ya está conectado");
+            $('#alreadyConnected').show();
+            $('#chatFull').hide();
+            $('#fieldEmpty').hide();
         });
 
         socket.on('chatFull', function(){
-            //TODO
-            console.log("El chat está lleno");
+            $('#alreadyConnected').hide();
+            $('#chatFull').show();
+            $('#fieldEmpty').hide();
         });
 
         var collapsedMenu = $('.chat-header').find('.fa-users');
@@ -827,11 +837,16 @@
 
         if(username !== "")
         {
+            $('#alreadyConnected').hide();
+            $('#chatFull').hide();
+            $('#fieldEmpty').hide();
+
             socket.emit('newUser', username);
         } else
         {
-            //TODO
-            console.log("El nombre de usuario no puede estar vacío.");
+            $('#alreadyConnected').hide();
+            $('#chatFull').hide();
+            $('#fieldEmpty').show();
         }
 
     });
