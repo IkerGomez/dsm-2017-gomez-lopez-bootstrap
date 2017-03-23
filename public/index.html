@@ -7,7 +7,7 @@
 
     <!-- Reset CSS para comenzar de cero -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -261,6 +261,27 @@
 
 <body translate="no">
 
+<div id="myModal" class="modal fade" data-keyboard="false" data-backdrop="static" role="dialog">
+    <div class="modal-dialog modal-sm">
+
+        <!-- Modal content-->
+        <div class="modal-content" style="color: rgb(68,71,83);">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Bienvenido al chat!</h4>
+            </div>
+            <div class="modal-body">
+                <!--<p>Introduce tu nombre de usuario:</p>-->
+                <input type="text" id="inputname" placeholder="Introduce tu nombre de usuario..." style="width: 100%; text-align: center;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="modalButton" class="btn btn-default" data-dismiss="modal">Entrar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <div class="container clearfix">
     <div class="row">
         <div class="people-list col-sm-3 col-xs-12" id="people-list">
@@ -334,7 +355,7 @@
 <script id="message-template" type="text/x-handlebars-template">
     <li class="clearfix">
         <div class="message-data align-right">
-            <span class="message-data-time" >{{time}}, Today</span> &nbsp; &nbsp;
+            <span class="message-data-time" >{{time}}</span> &nbsp; &nbsp;
             <span class="message-data-name" >{{username}}</span> <i class="fa fa-circle me"></i>
         </div>
         <div class="message other-message float-right">
@@ -368,7 +389,9 @@
 </script>
 
 <!-- JQuery -->
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!-- Handlebars -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.0/handlebars.min.js"></script>
 <!-- List -->
@@ -436,6 +459,18 @@
                         /* Remove user from the list */
                         $(allUsers[i]).closest("li").remove();
                     }
+                }
+
+                /* Update the search filer */
+                searchFilter.init();
+            },
+
+            removeAllUsers: function() {
+                var allUsers = this.$usersList.find($('.name'));
+
+                for(var i = 0; i < allUsers.length; i++)
+                {
+                    $(allUsers[i]).closest("li").remove();
                 }
 
                 /* Update the search filer */
@@ -531,13 +566,15 @@
                 /* Reset textarea */
                 this.$textarea.html("");
 
-                /* Send message to the server */
-                var userData = {
-                    'user' : 'Cristian', //TODO
-                    'message' : this.messageToSend,
-                    'time' : this.getCurrentTime()
-                };
-                socket.emit('chatMessage', userData);
+                if(this.messageToSend !== "")
+                {
+                    /* Send message to the server */
+                    var userData = {
+                        'user' :$('#inputname')[0].value,
+                        'message' : this.messageToSend
+                    };
+                    socket.emit('chatMessage', userData);
+                }
             },
 
             setUserTyping: function(username) {
@@ -658,9 +695,8 @@
             }
         });
 
-        //TODO: remove
-        chat.addUser("Cristian MMS");
-        chat.addUser("Iker Gómez");
+        /* Show welcome modal */
+        $('#myModal').modal('show');
 
         socket = io();
 
@@ -674,6 +710,30 @@
         socket.on('userAdded', function(username){
             /* Add new user to the list */
             chat.addUser(username);
+
+            /* Modify header username */
+            $('.chat-with')[0].innerHTML = username;
+        });
+
+        socket.on('updateUsers', function(users){
+            /* Erase current list */
+            chat.removeAllUsers();
+
+            /* Add new user to the list */
+            for(i=0; i<users.length; i++)
+            {
+                chat.addUser(users[i]);
+            }
+        });
+
+        socket.on('alreadyConnected', function(){
+            //TODO
+            console.log("El usuario ya está conectado");
+        });
+
+        socket.on('chatFull', function(){
+            //TODO
+            console.log("El chat está lleno");
         });
 
         var collapsedMenu = $('.chat-header').find('.fa-users');
@@ -725,6 +785,25 @@
             selection.addRange(range); //make the range you have just created the visible selection
         }
     }
+
+    $('#modalButton').on('click', function(){
+        var username = $('#inputname')[0].value;
+
+        if(username !== "")
+        {
+            socket.emit('newUser', username);
+        } else
+        {
+            //TODO
+            console.log("El nombre de usuario no puede estar vacío.");
+        }
+
+    });
+
+    $(window).bind('beforeunload', function () {
+        socket.emit('removeUser', $('.chat-with')[0].innerHTML);
+    });
+
 </script>
 
 </body>

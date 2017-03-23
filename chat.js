@@ -9,6 +9,28 @@ var bodyParser = require('body-parser');
 var parseUrlencoded = bodyParser.urlencoded({ extended: false });
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://dsm:marko_dsm_2017@ds139370.mlab.com:39370/chat-dsm', function (err) {
+    if(!err)
+    {
+        console.log("Conectado a la base de datos");
+    } else
+    {
+        throw err;
+    }
+});
+
+var Schema = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
+var Mensaje = new Schema({
+    autor: String,
+    texto: String,
+    fecha: Date
+});
+var Mensaje = mongoose.model('Mensaje', Mensaje);
+
+
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -23,23 +45,120 @@ app.get("/", function(request, response)
     response.render('index');
 });
 
+connectedUsers = [];
+usersLimit = 10;
+
 io.on('connection', function(client)
 {
-   client.on('chatMessage', function(datos){
-       var response = {
+    /* Notify all the other users */
+    client.emit('updateUsers', connectedUsers);
+
+    client.on('chatMessage', function(datos){
+
+        var date = new Date;
+
+        var responseDB = new Mensaje (
+            {
+            'autor' : datos.user,
+            'texto' : datos.message,
+            'fecha' : date
+            }
+        );
+
+        responseDB.save();
+
+
+        var response = {
            'username' : datos.user,
            'message' : datos.message,
-           'time' : datos.time,
+           'time' : date.toLocaleString(),
            'ownership' : true
-       };
+        };
 
-       /* Send message back to the user */
-       client.emit('chatResponse', JSON.stringify(response));
+        /* Send message back to the user */
+        client.emit('chatResponse', JSON.stringify(response));
 
-       /* Send message to all the other users */
-       response.ownership = false;
-       client.broadcast.emit('chatResponse', JSON.stringify(response));
-   });
+        /* Send message to all the other users */
+        response.ownership = false;
+        client.broadcast.emit('chatResponse', JSON.stringify(response));
+    });
+
+    client.on('newUser', function(username){
+        /* Add new user to database */
+        if(connectedUsers.length < usersLimit)
+        {
+            /* Check whether the user is already connected */
+            var alreadyConnected = false;
+            for(i=0; i<connectedUsers.length; i++)
+            {
+                if(connectedUsers[i] == username)
+                {
+                    alreadyConnected = true;
+                }
+            }
+
+            if(!alreadyConnected)
+            {
+                /* Load previous messages */
+                Mensaje.find({}, function(err, matches){
+                    for(i=0; i<matches.length; i++)
+                    {
+                        var ownership = false;
+                        if(matches[i].autor === username)
+                        {
+                            ownership = true;
+                        }
+
+                        var response = {
+                            'username' : matches[i].autor,
+                            'message' : matches[i].texto,
+                            'time' : matches[i].fecha.toLocaleString(),
+                            'ownership' : ownership
+                        };
+
+                        /* Send message back to the user */
+                        client.emit('chatResponse', JSON.stringify(response));
+                    }
+                });
+
+                connectedUsers.push(username);
+
+                /* Notify the user */
+                client.emit('userAdded', username);
+
+                /* Notify all the other users */
+                client.broadcast.emit('updateUsers', connectedUsers);
+            } else
+            {
+                client.emit('alreadyConnected');
+            }
+        } else
+        {
+            client.emit('chatFull');
+        }
+    });
+
+    client.on('removeUser', function(username){
+        /* Check whether the user is on the list */
+        var found = false;
+        for(i=0; i<connectedUsers.length; i++)
+        {
+            if(connectedUsers[i] == username)
+            {
+                found = true;
+            }
+        }
+
+        if(found)
+        {
+            /* Remove user */
+            connectedUsers.splice(connectedUsers.indexOf(username), 1);
+
+            /* Notify all the other users */
+            client.broadcast.emit('updateUsers', connectedUsers);
+        }
+
+    });
 
 });
 
