@@ -25,11 +25,6 @@ messageCont = 0;
 mongoose.connect('mongodb://dsm:marko_dsm_2017@ds139370.mlab.com:39370/chat-dsm', function (err) {
     if(!err)
     {
-        /* Get number of messages */
-        Mensaje.find({}, function(err, matches){
-            messageCont = matches.length;
-        });
-
         console.log("Conectado a la base de datos");
     } else
     {
@@ -59,6 +54,11 @@ usersLimit = 10;
 
 io.on('connection', function(client)
 {
+    Mensaje.find({}, function(err, matches){
+        messageCont = matches.length;
+    });
+
+
     client.on('chatMessage', function(datos){
 
         var date = new Date;
