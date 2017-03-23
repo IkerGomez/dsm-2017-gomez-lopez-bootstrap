@@ -11,16 +11,6 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://dsm:marko_dsm_2017@ds139370.mlab.com:39370/chat-dsm', function (err) {
-    if(!err)
-    {
-        console.log("Conectado a la base de datos");
-    } else
-    {
-        throw err;
-    }
-});
-
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 var Mensaje = new Schema({
@@ -29,6 +19,25 @@ var Mensaje = new Schema({
     fecha: Date
 });
 var Mensaje = mongoose.model('Mensaje', Mensaje);
+
+messageCont = 0;
+
+mongoose.connect('mongodb://dsm:marko_dsm_2017@ds139370.mlab.com:39370/chat-dsm', function (err) {
+    if(!err)
+    {
+        /* Get number of messages */
+        Mensaje.find({}, function(err, matches){
+            messageCont = matches.length;
+        });
+
+        console.log("Conectado a la base de datos");
+    } else
+    {
+        throw err;
+    }
+});
+
+
 
 
 
@@ -50,9 +59,6 @@ usersLimit = 10;
 
 io.on('connection', function(client)
 {
-    /* Notify all the other users */
-    client.emit('updateUsers', connectedUsers);
-
     client.on('chatMessage', function(datos){
 
         var date = new Date;
@@ -67,6 +73,8 @@ io.on('connection', function(client)
 
         responseDB.save();
 
+        messageCont++;
+
 
         var response = {
            'username' : datos.user,
@@ -77,10 +85,12 @@ io.on('connection', function(client)
 
         /* Send message back to the user */
         client.emit('chatResponse', JSON.stringify(response));
+        client.emit('numberUpdate', messageCont);
 
         /* Send message to all the other users */
         response.ownership = false;
         client.broadcast.emit('chatResponse', JSON.stringify(response));
+        client.broadcast.emit('numberUpdate', messageCont);
     });
 
     client.on('newUser', function(username){
@@ -99,6 +109,11 @@ io.on('connection', function(client)
 
             if(!alreadyConnected)
             {
+                /* Update list of users */
+                client.emit('updateUsers', connectedUsers);
+                /* Send number of messages to the client */
+                client.emit('numberUpdate', messageCont);
+
                 /* Load previous messages */
                 Mensaje.find({}, function(err, matches){
                     for(i=0; i<matches.length; i++)
@@ -160,8 +175,11 @@ io.on('connection', function(client)
 
     });
 
+    client.on('typing', function(username, status) {
+        client.emit('typingChange', username, status);
+        client.broadcast.emit('typingChange', username, status);
+    });
+
 });
 
 server.listen(process.env.PORT||8080);
-
-//app.listen(process.env.PORT||8080);

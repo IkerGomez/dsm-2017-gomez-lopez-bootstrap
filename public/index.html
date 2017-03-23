@@ -199,7 +199,7 @@
         }
 
         .offline {
-            color: #E38968;
+            color: rgb(168,172,194);
         }
 
         .me {
@@ -302,7 +302,7 @@
 
                 <div class="chat-about">
                     <div class="chat-with">Logged user</div>
-                    <div class="chat-num-messages">Number of messages</div>
+                    <div class="chat-num-messages">Number of messages: <span class="num-messages"></span></div>
                 </div>
 
                 <i class="fa fa-users visible-xs" aria-hidden="true" style="float: right; font-size: 30px; cursor: pointer; margin-top: 9px;"></i>
@@ -359,7 +359,7 @@
             <span class="message-data-name" >{{username}}</span> <i class="fa fa-circle me"></i>
         </div>
         <div class="message other-message float-right">
-            {{{messageOutput}}}
+            {{{response}}}
         </div>
     </li>
 </script>
@@ -368,7 +368,19 @@
     <li>
         <div class="message-data">
             <span class="message-data-name"><i class="fa fa-circle online"></i>{{username}}</span>
-            <span class="message-data-time">{{time}}, Today</span>
+            <span class="message-data-time">{{time}}</span>
+        </div>
+        <div class="message my-message">
+            {{{response}}}
+        </div>
+    </li>
+</script>
+
+<script id="message-response-template-offline" type="text/x-handlebars-template">
+    <li>
+        <div class="message-data">
+            <span class="message-data-name"><i class="fa fa-circle offline"></i>{{username}}</span>
+            <span class="message-data-time">{{time}}</span>
         </div>
         <div class="message my-message">
             {{{response}}}
@@ -509,20 +521,22 @@
                     if(data.ownership)
                     {
                         template = Handlebars.compile( $("#message-template").html());
-                        context = {
-                            username: data.username,
-                            messageOutput: receivedMessage,
-                            time: data.time
-                        };
                     } else
                     {
-                        template = Handlebars.compile( $("#message-response-template").html());
-                        context = {
-                            username: data.username,
-                            response: receivedMessage,
-                            time: data.time
-                        };
+                        if(this.isOnTheList(data.username))
+                        {
+                            template = Handlebars.compile( $("#message-response-template").html());
+                        } else
+                        {
+                            template = Handlebars.compile( $("#message-response-template-offline").html());
+                        }
                     }
+
+                    context = {
+                        username: data.username,
+                        response: receivedMessage,
+                        time: data.time
+                    };
 
                     this.$chatHistoryList.append(template(context));
                     this.scrollToBottom();
@@ -618,6 +632,20 @@
                 }
             },
 
+            isOnTheList: function(username) {
+                var found = false;
+                var allUsers = this.$usersList.find($('.name'));
+
+                for(var i = 0; i < allUsers.length; i++)
+                {
+                    if (allUsers[i].innerText === username) {
+                        found = true;
+                    }
+                }
+
+                return found;
+            },
+
             // Función para enviar cuando se pulse la tecla de Intro:
             addMessageEnter: function(event) {
                 if (event.keyCode === 13) {
@@ -628,12 +656,6 @@
             // Scroll hasta abajo del chat:
             scrollToBottom: function() {
                 this.$chatHistory.scrollTop(this.$chatHistory[0].scrollHeight);
-            },
-
-            // Obtener tiempo actual:
-            getCurrentTime: function() {
-                return new Date().toLocaleTimeString().
-                replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3");
             }
         };
 
@@ -726,6 +748,20 @@
             }
         });
 
+        socket.on('numberUpdate', function(number){
+            $('.num-messages')[0].innerHTML = number;
+        });
+
+        socket.on('typingChange', function(username, status){
+            if(status)
+            {
+                chat.setUserTyping(username);
+            } else
+            {
+                chat.unsetUserTyping(username);
+            }
+        });
+
         socket.on('alreadyConnected', function(){
             //TODO
             console.log("El usuario ya está conectado");
@@ -802,6 +838,18 @@
 
     $(window).bind('beforeunload', function () {
         socket.emit('removeUser', $('.chat-with')[0].innerHTML);
+    });
+
+    $('#message-to-send').bind("DOMSubtreeModified",function(){
+        var username = $('.chat-with')[0].innerHTML;
+
+        if(this.innerHTML !== "")
+        {
+            socket.emit("typing", username, true);
+        } else
+        {
+            socket.emit("typing", username, false);
+        }
     });
 
 </script>
