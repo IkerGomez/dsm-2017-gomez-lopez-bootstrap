@@ -2,6 +2,7 @@
  * Created by cmartinezdemorentin on 02/03/17.
  */
 
+/* Import required modules */
 var express = require('express');
 var app = express();
 var path = require('path');
@@ -11,6 +12,16 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var mongoose = require('mongoose');
 
+/* Configure server paths */
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+app.use('/', express.static(path.join(__dirname, 'public')));
+app.use('/css', express.static(path.join(__dirname, 'public/assets/css')));
+app.use('/images', express.static(path.join(__dirname, 'public/assets/images')));
+app.use('/js', express.static(path.join(__dirname, 'public/assets/js')));
+
+/* Configure database */
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 var Mensaje = new Schema({
@@ -32,33 +43,24 @@ mongoose.connect('mongodb://dsm:marko_dsm_2017@ds139370.mlab.com:39370/chat-dsm'
     }
 });
 
-
-
-
-
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-app.use('/', express.static(path.join(__dirname, 'public')));
-app.use('/css', express.static(path.join(__dirname, 'public/assets/css')));
-app.use('/images', express.static(path.join(__dirname, 'public/assets/images')));
-app.use('/js', express.static(path.join(__dirname, 'public/assets/js')));
-
+/* Render 'index.html' when the user access the chat */
 app.get("/", function(request, response)
 {
     response.render('index');
 });
 
+/* This list is used to track number of users in the chat */
 connectedUsers = [];
 usersLimit = 10;
 
+/* Define socket functions */
 io.on('connection', function(client)
 {
     Mensaje.find({}, function(err, matches){
         messageCont = matches.length;
     });
 
-
+    /* When the server receives a new message, it sends it to the database and to the connected users */
     client.on('chatMessage', function(datos){
 
         var date = new Date;
@@ -93,6 +95,7 @@ io.on('connection', function(client)
         client.broadcast.emit('numberUpdate', messageCont);
     });
 
+    /* Add a new user to the chat */
     client.on('newUser', function(username){
         /* Add new user to database */
         if(connectedUsers.length < usersLimit)
@@ -153,6 +156,7 @@ io.on('connection', function(client)
         }
     });
 
+    /* Remove user */
     client.on('removeUser', function(username){
         /* Check whether the user is on the list */
         var found = false;
@@ -175,6 +179,7 @@ io.on('connection', function(client)
 
     });
 
+    /* Notify all the users when somebody is typing */
     client.on('typing', function(username, status) {
         client.emit('typingChange', username, status);
         client.broadcast.emit('typingChange', username, status);
