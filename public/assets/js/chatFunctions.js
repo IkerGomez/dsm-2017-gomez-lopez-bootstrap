@@ -254,6 +254,25 @@
         // Scroll hasta abajo del chat:
         scrollToBottom: function() {
             this.$chatHistory.scrollTop(this.$chatHistory[0].scrollHeight);
+        },
+
+        //Notify connected users when somebody logs in/out
+        notifyUserLoggedIn: function(username) {
+            $('#notificationUsername')[0].innerHTML = username;
+            $('#notificationStatusIcon').removeClass("offline").addClass("online");
+            $('#notificationStatus')[0].innerHTML = "online";
+
+            $('.userNotifications').slideDown(400);
+            setTimeout(function(){$('.userNotifications').slideUp(400);}, 5000);
+        },
+
+        notifyUserLoggedOut: function(username) {
+            $('#notificationUsername')[0].innerHTML = username;
+            $('#notificationStatusIcon').removeClass("online").addClass("offline");
+            $('#notificationStatus')[0].innerHTML = "offline";
+
+            $('.userNotifications').slideDown(400);
+            setTimeout(function(){$('.userNotifications').slideUp(400);}, 5000);
         }
     };
 

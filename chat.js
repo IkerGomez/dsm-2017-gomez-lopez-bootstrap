@@ -185,6 +185,11 @@ io.on('connection', function(client)
         client.broadcast.emit('typingChange', username, status);
     });
 
+    /* Notify all the users when somebody has logged in/out */
+    client.on('logged', function(username, status) {
+        client.broadcast.emit('logged', username, status);
+    });
+
 });
 
 server.listen(process.env.PORT||8080);

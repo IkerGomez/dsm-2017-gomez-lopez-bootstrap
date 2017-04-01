@@ -244,3 +244,18 @@ body {
 .name span {
     color: #92959E;
 }
+
+.userNotifications {
+    position: absolute;
+    text-align: center;
+    width: 33%;
+    margin-left: 66%;
+    border-bottom-left-radius: 7px;
+    border: none;
+    color: white;
+    background: #6A6C75;
+    font-size: 14px;
+    padding: 10px 5px 10px 5px;
+    max-height: 10.4vw;
+    overflow: hidden;
+}

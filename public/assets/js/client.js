@@ -9,6 +9,9 @@ $(document).ready(function() {
     $('#chatFull').hide();
     $('#fieldEmpty').hide();
 
+    /* Hide notifications */
+    $('.userNotifications').hide();
+
     /* Save window size */
     smallWindow = false;
     if($(window).width() < 768)
@@ -91,6 +94,17 @@ $(document).ready(function() {
         }
     });
 
+    /* Change user's "typing..." status */
+    socket.on('logged', function(username, status){
+        if(status)
+        {
+            chat.notifyUserLoggedIn(username);
+        } else
+        {
+            chat.notifyUserLoggedOut(username);
+        }
+    });
+
     /* Notify the user that it is already connected */
     socket.on('alreadyConnected', function(){
         $('#alreadyConnected').show();
@@ -110,7 +124,7 @@ $(document).ready(function() {
     collapsedMenu.on('click', function () {
         if(!chat.$list.is(":visible"))
         {
-            chat.$list.show(400);
+            chat.$list.slideDown(400);
         }
     });
 
@@ -119,7 +133,7 @@ $(document).ready(function() {
     listRemove.on('click', function () {
         if(chat.$list.is(":visible"))
         {
-            chat.$list.hide(400);
+            chat.$list.slideUp(400);
         }
     });
 
@@ -174,6 +188,7 @@ function userLogin()
         $('#fieldEmpty').hide();
 
         socket.emit('newUser', username);
+        userLoggedNotification(username, true);
     } else {
         $('#alreadyConnected').hide();
         $('#chatFull').hide();
@@ -191,12 +206,20 @@ function catchEnter(event) {
 
 /* Notify the server the user exists the chat when window is closed */
 $(window).bind('beforeunload', function () {
-    socket.emit('removeUser', $('.chat-with')[0].innerHTML);
+    var username = $('.chat-with')[0].innerHTML;
+
+    socket.emit('removeUser', username);
+    userLoggedNotification(username, false);
 });
 
 function userTypingNotification(username, status)
 {
     socket.emit("typing", username, status);
+}
+
+function userLoggedNotification(username, status)
+{
+    socket.emit("logged", username, status);
 }
 
 /* Detect whether the user is typing */
