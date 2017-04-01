@@ -161,29 +161,43 @@ function setEndOfContenteditable(contentEditableElement)
 }
 
 /* Modal box managment */
-$('#modalButton').on('click', function(){
+$('#modalButton').on('click', userLogin);
+$('#inputname').on('keyup', catchEnter);
+
+function userLogin()
+{
     var username = $('#inputname')[0].value;
 
-    if(username !== "")
-    {
+    if (username !== "") {
         $('#alreadyConnected').hide();
         $('#chatFull').hide();
         $('#fieldEmpty').hide();
 
         socket.emit('newUser', username);
-    } else
-    {
+    } else {
         $('#alreadyConnected').hide();
         $('#chatFull').hide();
         $('#fieldEmpty').show();
     }
+}
 
-});
+/* Catch 'enter' in modal box */
+function catchEnter(event) {
+    if (event.keyCode === 13)
+    {
+        userLogin();
+    }
+}
 
 /* Notify the server the user exists the chat when window is closed */
 $(window).bind('beforeunload', function () {
     socket.emit('removeUser', $('.chat-with')[0].innerHTML);
 });
+
+function userTypingNotification(username, status)
+{
+    socket.emit("typing", username, status);
+}
 
 /* Detect whether the user is typing */
 $('#message-to-send').bind("DOMSubtreeModified",function(){
@@ -191,9 +205,11 @@ $('#message-to-send').bind("DOMSubtreeModified",function(){
 
     if(this.innerHTML !== "")
     {
-        socket.emit("typing", username, true);
+        userTypingNotification(username, true);
+
+        setTimeout(userTypingNotification, 1000, username, false);
     } else
     {
-        socket.emit("typing", username, false);
+        userTypingNotification(username, false);
     }
 });
