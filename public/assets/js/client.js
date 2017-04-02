@@ -209,7 +209,7 @@ $(window).bind('beforeunload', function () {
     var username = $('.chat-with')[0].innerHTML;
 
     socket.emit('removeUser', username);
-    userLoggedNotification(username, false);
+    socket.emit("logged", username, false);
 });
 
 function userTypingNotification(username, status)
