@@ -207,11 +207,11 @@ function catchEnter(event) {
 /* Notify the server the user exists the chat when window is closed */
 $(window).on('beforeunload', function () {
     var username = $('.chat-with')[0].innerHTML;
-
-    //TODO: hay veces que no da tiempo a que la notificación de que el usuario se ha desloagueado se envíe
     
     socket.emit('removeUser', username);
     userLoggedNotification(username, false);
+
+    socket.close();
 });
 
 function userTypingNotification(username, status)
