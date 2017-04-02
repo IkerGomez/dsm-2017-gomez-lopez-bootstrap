@@ -205,11 +205,13 @@ function catchEnter(event) {
 }
 
 /* Notify the server the user exists the chat when window is closed */
-$(window).bind('beforeunload', function () {
+$(window).on('beforeunload', function () {
     var username = $('.chat-with')[0].innerHTML;
 
+    //TODO: hay veces que no da tiempo a que la notificación de que el usuario se ha desloagueado se envíe
+    
     socket.emit('removeUser', username);
-    socket.emit("logged", username, false);
+    userLoggedNotification(username, false);
 });
 
 function userTypingNotification(username, status)
@@ -223,6 +225,7 @@ function userLoggedNotification(username, status)
 }
 
 /* Detect whether the user is typing */
+var timer;
 $('#message-to-send').bind("DOMSubtreeModified",function(){
     var username = $('.chat-with')[0].innerHTML;
 
@@ -230,7 +233,8 @@ $('#message-to-send').bind("DOMSubtreeModified",function(){
     {
         userTypingNotification(username, true);
 
-        setTimeout(userTypingNotification, 1000, username, false);
+        clearTimeout(timer);
+        timer = setTimeout(userTypingNotification, 1500, username, false);
     } else
     {
         userTypingNotification(username, false);

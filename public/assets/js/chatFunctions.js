@@ -4,6 +4,8 @@
 
 (function(){
 
+    var timer;
+
     chat = {
         messageToSend: '',
 
@@ -263,7 +265,8 @@
             $('#notificationStatus')[0].innerHTML = "online";
 
             $('.userNotifications').slideDown(400);
-            setTimeout(function(){$('.userNotifications').slideUp(400);}, 5000);
+            clearTimeout(timer);
+            timer = setTimeout(function(){$('.userNotifications').slideUp(400);}, 5000);
         },
 
         notifyUserLoggedOut: function(username) {
@@ -272,7 +275,8 @@
             $('#notificationStatus')[0].innerHTML = "offline";
 
             $('.userNotifications').slideDown(400);
-            setTimeout(function(){$('.userNotifications').slideUp(400);}, 5000);
+            clearTimeout(timer);
+            timer = setTimeout(function(){$('.userNotifications').slideUp(400);}, 5000);
         }
     };
 
