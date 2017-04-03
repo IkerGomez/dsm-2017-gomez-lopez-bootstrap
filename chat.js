@@ -187,6 +187,8 @@ io.on('connection', function(client)
 
     /* Notify all the users when somebody has logged in/out */
     client.on('logged', function(username, status) {
+        client.emit('loggingDone');
+
         client.broadcast.emit('logged', username, status);
     });
 

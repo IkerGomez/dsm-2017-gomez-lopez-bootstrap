@@ -2,6 +2,8 @@
  * Created by cmartinezdemorentin on 25/03/17.
  */
 
+var finished = false;
+
 $(document).ready(function() {
 
     /* Hide error messages */
@@ -119,6 +121,10 @@ $(document).ready(function() {
         $('#fieldEmpty').hide();
     });
 
+    socket.on('loggingDone', function(){
+        finished = true;
+    });
+
     /* Show the users list (active when the screen is small) */
     var collapsedMenu = $('.chat-header').find('.fa-users');
     collapsedMenu.on('click', function () {
@@ -210,6 +216,10 @@ $(window).on('beforeunload', function () {
     
     socket.emit('removeUser', username);
     userLoggedNotification(username, false);
+
+    /* Wait server response for a maximum of two seconds */
+    var start = new Date().getTime();
+    while(!finished && ((new Date().getTime() - start) < 2000)){}
 
     socket.close();
 });
