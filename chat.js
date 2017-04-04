@@ -31,15 +31,20 @@ var Mensaje = new Schema({
 });
 var Mensaje = mongoose.model('Mensaje', Mensaje);
 
-mongoose.connect('mongodb://dsm:marko_dsm_2017@ds139370.mlab.com:39370/chat-dsm', function (err) {
-    if(!err)
-    {
-        console.log("Conectado a la base de datos");
-    } else
-    {
-        throw err;
-    }
-});
+function connecToMongoDB()
+{
+    mongoose.connect('mongodb://dsm:marko_dsm_2017@ds139370.mlab.com:39370/chat-dsm', function (err) {
+        if(!err)
+        {
+            console.log("Conectado a la base de datos");
+        } else
+        {
+            throw err;
+        }
+    });
+}
+
+connecToMongoDB();
 
 /* Render 'index.html' when the user access the chat */
 app.get("/", function(request, response)
@@ -151,6 +156,12 @@ io.on('connection', function(client)
 
     /* Send 10 previous messages to the client */
     client.on('moreMessages', function(username, lastDate){
+
+        if(mongoose.connection.readyState != 1)
+        {
+            connecToMongoDB();
+        }
+
         Mensaje.find({fecha: {$lt: lastDate}}, function(err, matches){
 
             for(i=0; i<matches.length && i<10; i++)
