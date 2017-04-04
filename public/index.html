@@ -62,17 +62,22 @@
             </div>
 
             <div class="chat-header clearfix">
-                <i class="fa fa-user-circle-o" aria-hidden="true" style="font-size: 45px; float: left;"></i>
+                    <i class="fa fa-user-circle-o" aria-hidden="true" style="font-size: 45px; float: left;"></i>
 
                 <div class="chat-about">
-                    <div class="chat-with">Logged user</div>
-                    <div class="chat-num-messages">Number of messages: <span class="num-messages"></span></div>
+                    <div class="chat-with">-</div>
+                    <div class="chat-num-messages">Number of messages: <span class="num-messages">-</span></div>
                 </div>
 
                 <i class="fa fa-users visible-xs" aria-hidden="true" style="float: right; font-size: 30px; cursor: pointer; margin-top: 9px;"></i>
             </div>
 
             <div class="chat-history">
+
+                <div id="refreshSection">
+                    <i id="refreshButton" class="fa fa-refresh" style="cursor: pointer;" aria-hidden="true"></i>
+                </div>
+
                 <!-- Chat messages are appended to this list -->
                 <ul>
 
@@ -129,7 +134,7 @@
 </script>
 
 <script id="message-response-template" type="text/x-handlebars-template">
-    <li>
+    <li class="clearfix">
         <div class="message-data">
             <span class="message-data-name"><i class="fa fa-circle online"></i>{{username}}</span>
             <span class="message-data-time">{{time}}</span>
@@ -141,7 +146,7 @@
 </script>
 
 <script id="message-response-template-offline" type="text/x-handlebars-template">
-    <li>
+    <li class="clearfix">
         <div class="message-data">
             <span class="message-data-name"><i class="fa fa-circle offline"></i>{{username}}</span>
             <span class="message-data-time">{{time}}</span>

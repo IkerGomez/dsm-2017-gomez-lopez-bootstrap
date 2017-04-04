@@ -31,8 +31,6 @@ var Mensaje = new Schema({
 });
 var Mensaje = mongoose.model('Mensaje', Mensaje);
 
-messageCont = 0;
-
 mongoose.connect('mongodb://dsm:marko_dsm_2017@ds139370.mlab.com:39370/chat-dsm', function (err) {
     if(!err)
     {
@@ -56,10 +54,6 @@ usersLimit = 10;
 /* Define socket functions */
 io.on('connection', function(client)
 {
-    Mensaje.find({}, function(err, matches){
-        messageCont = matches.length;
-    });
-
     /* When the server receives a new message, it sends it to the database and to the connected users */
     client.on('chatMessage', function(datos){
 
@@ -75,8 +69,6 @@ io.on('connection', function(client)
 
         responseDB.save();
 
-        messageCont++;
-
 
         var response = {
            'username' : datos.user,
@@ -87,12 +79,10 @@ io.on('connection', function(client)
 
         /* Send message back to the user */
         client.emit('chatResponse', JSON.stringify(response));
-        client.emit('numberUpdate', messageCont);
 
         /* Send message to all the other users */
         response.ownership = false;
         client.broadcast.emit('chatResponse', JSON.stringify(response));
-        client.broadcast.emit('numberUpdate', messageCont);
     });
 
     /* Add a new user to the chat */
@@ -114,11 +104,14 @@ io.on('connection', function(client)
             {
                 /* Update list of users */
                 client.emit('updateUsers', connectedUsers);
-                /* Send number of messages to the client */
-                client.emit('numberUpdate', messageCont);
 
-                /* Load previous messages */
-                Mensaje.find({}, function(err, matches){
+                /* Load only yesterday and today messages */
+                var currentDate = new Date;
+                var limitDate = currentDate.setHours(0, 0, 0, 0);
+                limitDate -= 1;
+
+                Mensaje.find({fecha: {$gte: limitDate}}, function(err, matches){
+
                     for(i=0; i<matches.length; i++)
                     {
                         var ownership = false;
@@ -154,6 +147,37 @@ io.on('connection', function(client)
         {
             client.emit('chatFull');
         }
+    });
+
+    /* Send 10 previous messages to the client */
+    client.on('moreMessages', function(username, lastDate){
+        Mensaje.find({fecha: {$lt: lastDate}}, function(err, matches){
+
+            for(i=0; i<matches.length && i<10; i++)
+            {
+                var ownership = false;
+                if(matches[i].autor === username)
+                {
+                    ownership = true;
+                }
+
+                var response = {
+                    'username' : matches[i].autor,
+                    'message' : matches[i].texto,
+                    'time' : matches[i].fecha.toLocaleString(),
+                    'ownership' : ownership
+                };
+
+                /* Send message back to the user */
+                client.emit('chatPreviousMessage', JSON.stringify(response));
+            }
+
+            if(matches.length > 0)
+            {
+                client.emit('scrollToTime', matches[0].fecha.toLocaleString());
+            }
+
+        }).sort({fecha: -1});
     });
 
     /* Remove user */

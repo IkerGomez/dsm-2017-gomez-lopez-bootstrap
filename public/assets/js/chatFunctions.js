@@ -139,6 +139,61 @@
             }
         },
 
+        //Añade el mensaje antiguo recibido del servidor a la lista de mensajes, aplicando el formato correspondiente
+        addPreviousMessage: function(data) {
+            if (data.message.trim() !== "") {
+                var template;
+                var context;
+
+                var receivedMessage = data.message;
+
+                /* Look for emojis and replace them */
+                var endOfMessage = false;
+                var bIndex, eIndex;
+                while(!endOfMessage)
+                {
+                    bIndex = receivedMessage.indexOf('<emoji');
+                    if(bIndex !== -1)
+                    {
+                        eIndex = receivedMessage.indexOf('>', bIndex);
+
+                        var emojiString = receivedMessage.substr(bIndex, eIndex-bIndex+1);
+
+                        /* Detect emoji number */
+                        var emojiNum = $(emojiString).attr('num');
+
+                        receivedMessage = receivedMessage.replace(emojiString, '<img src="' + emojiPaths[emojiNum] + '" width="20px"/>');
+                    } else
+                    {
+                        endOfMessage = true;
+                    }
+                }
+
+                if(data.ownership)
+                {
+                    template = Handlebars.compile( $("#message-template").html());
+                } else
+                {
+                    if(this.isOnTheList(data.username))
+                    {
+                        template = Handlebars.compile( $("#message-response-template").html());
+                    } else
+                    {
+                        template = Handlebars.compile( $("#message-response-template-offline").html());
+                    }
+                }
+
+                context = {
+                    username: data.username,
+                    response: receivedMessage,
+                    time: data.time
+                };
+
+                $(this.$chatHistoryList).prepend(template(context));
+
+            }
+        },
+
         //Envía el mensaje escrito por el usuario al servidor
         addMessage: function() {
             /* This function gets called when the user sends a message */

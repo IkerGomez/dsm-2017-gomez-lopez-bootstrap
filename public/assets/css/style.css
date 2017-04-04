@@ -3,9 +3,22 @@
     box-sizing: border-box;
 }
 
-/* Hide scrollbar. It doesn't work on Firefox. */
+/* Hide scrollbar. */
 ::-webkit-scrollbar {
     display: none;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #9496a5;
+}
+::-moz-placeholder { /* Firefox 19+ */
+    color: #9496a5;
+}
+:-ms-input-placeholder { /* IE 10+ */
+    color: #9496a5;
+}
+:-moz-placeholder { /* Firefox 18- */
+    color: #9496a5;
 }
 
 body {
@@ -102,7 +115,7 @@ body {
     margin-top: 12px;
 }
 .chat .chat-history {
-    padding: 30px 30px 20px;
+    padding: 0 30px 20px;
     border-bottom: 2px solid white;
     overflow-y: scroll;
     height: calc(100vh - 184px - 94px);
@@ -258,4 +271,10 @@ body {
     padding: 10px 5px 10px 5px;
     max-height: 10.4vw;
     overflow: hidden;
+}
+
+#refreshSection {
+    font-size: 24px;
+    padding: 10px 0 10px 0;
+    text-align: center;
 }

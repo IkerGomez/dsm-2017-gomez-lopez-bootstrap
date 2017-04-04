@@ -55,6 +55,19 @@ $(document).ready(function() {
 
         /* Add received message to the timeline */
         chat.render(response);
+
+        /* Update number of shown messages */
+        updateMessagesNumber();
+    });
+
+    socket.on('chatPreviousMessage', function(datos){
+        var response = JSON.parse(datos);
+
+        /* Add received message to the timeline */
+        chat.addPreviousMessage(response);
+
+        /* Update number of shown messages */
+        updateMessagesNumber();
     });
 
     /* Add new user to the list */
@@ -80,11 +93,6 @@ $(document).ready(function() {
         }
     });
 
-    /* Update number of total messages */
-    socket.on('numberUpdate', function(number){
-        $('.num-messages')[0].innerHTML = number;
-    });
-
     /* Change user's "typing..." status */
     socket.on('typingChange', function(username, status){
         if(status)
@@ -96,14 +104,19 @@ $(document).ready(function() {
         }
     });
 
-    /* Change user's "typing..." status */
+    /* Show a notification */
     socket.on('logged', function(username, status){
-        if(status)
+        var myName = $('.chat-with')[0].innerHTML;
+
+        if(myName !== '-')
         {
-            chat.notifyUserLoggedIn(username);
-        } else
-        {
-            chat.notifyUserLoggedOut(username);
+            if(status)
+            {
+                chat.notifyUserLoggedIn(username);
+            } else
+            {
+                chat.notifyUserLoggedOut(username);
+            }
         }
     });
 
@@ -123,6 +136,21 @@ $(document).ready(function() {
 
     socket.on('loggingDone', function(){
         finished = true;
+    });
+
+    socket.on('scrollToTime', function(timeString){
+
+        var messagesTime = $('.message-data-time');
+
+        for(i=0; i<messagesTime.length; i++)
+        {
+            if(messagesTime[i].innerHTML === timeString)
+            {
+                $('.chat-history').animate({
+                    scrollTop: $($($('.message-data-time')[i]).closest('.clearfix')[0]).offset().top
+                }, 0);
+            }
+        }
     });
 
     /* Show the users list (active when the screen is small) */
@@ -183,6 +211,7 @@ function setEndOfContenteditable(contentEditableElement)
 /* Modal box managment */
 $('#modalButton').on('click', userLogin);
 $('#inputname').on('keyup', catchEnter);
+$('#refreshButton').on('click', requestMessages);
 
 function userLogin()
 {
@@ -202,6 +231,14 @@ function userLogin()
     }
 }
 
+function requestMessages()
+{
+    var username = $('#inputname')[0].value;
+    var lastDate = Date.parse($('.message-data-time')[0].innerHTML);
+
+    socket.emit('moreMessages', username, lastDate);
+}
+
 /* Catch 'enter' in modal box */
 function catchEnter(event) {
     if (event.keyCode === 13)
@@ -213,13 +250,16 @@ function catchEnter(event) {
 /* Notify the server the user exists the chat when window is closed */
 $(window).on('beforeunload', function () {
     var username = $('.chat-with')[0].innerHTML;
-    
-    socket.emit('removeUser', username);
-    userLoggedNotification(username, false);
 
-    /* Wait server response for a maximum of two seconds */
-    var start = new Date().getTime();
-    while(!finished && ((new Date().getTime() - start) < 2000)){}
+    if(username !== '-')
+    {
+        socket.emit('removeUser', username);
+        userLoggedNotification(username, false);
+
+        /* Wait server response for a maximum of two seconds */
+        var start = new Date().getTime();
+        while(!finished && ((new Date().getTime() - start) < 2000)){}
+    }
 
     socket.close();
 });
@@ -250,3 +290,8 @@ $('#message-to-send').bind("DOMSubtreeModified",function(){
         userTypingNotification(username, false);
     }
 });
+
+function updateMessagesNumber()
+{
+    $('.num-messages')[0].innerHTML = $('.message').length;
+}
