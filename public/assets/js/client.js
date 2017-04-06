@@ -77,6 +77,8 @@ $(document).ready(function() {
         /* Add new user to the list */
         chat.addUser(username);
 
+        alert("hola");
+
         /* Modify header username */
         $('.chat-with')[0].innerHTML = username;
     });
