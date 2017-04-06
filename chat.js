@@ -112,9 +112,8 @@ io.on('connection', function(client)
 
                 /* Load only yesterday and today messages */
                 var currentDate = new Date;
-                var limitDate = currentDate;
-                //var limitDate = currentDate.setHours(0, 0, 0, 0);
-                //limitDate -= 1;
+                var limitDate = currentDate.setHours(0, 0, 0, 0);
+                limitDate -= 1;
 
                 Mensaje.find({fecha: {$gte: limitDate}}, function(err, matches){
 
