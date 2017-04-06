@@ -160,7 +160,6 @@ io.on('connection', function(client)
         if(mongoose.connection.readyState != 1)
         {
             console.log("Conexión con la base de datos perdida");
-            socket.emit('userAdded', 'test');
             connecToMongoDB();
         }
 
@@ -188,6 +187,9 @@ io.on('connection', function(client)
             if(matches.length > 0)
             {
                 client.emit('scrollToTime', matches[0].fecha.toLocaleString());
+            } else
+            {
+                socket.emit('userAdded', 'test');
             }
 
         }).sort({fecha: -1});
