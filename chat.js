@@ -157,8 +157,6 @@ io.on('connection', function(client)
     /* Send 10 previous messages to the client */
     client.on('moreMessages', function(username, lastDate){
 
-        client.emit('userAdded', 'test');
-
         if(mongoose.connection.readyState != 1)
         {
             console.log("Conexión con la base de datos perdida");
@@ -189,6 +187,9 @@ io.on('connection', function(client)
             if(matches.length > 0)
             {
                 client.emit('scrollToTime', matches[0].fecha.toLocaleString());
+            } else
+            {
+                client.emit('userAdded', 'test');
             }
 
         }).sort({fecha: -1});
