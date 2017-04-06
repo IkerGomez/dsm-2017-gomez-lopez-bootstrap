@@ -23,7 +23,6 @@ app.use('/js', express.static(path.join(__dirname, 'public/assets/js')));
 
 /* Configure database */
 var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId;
 var Mensaje = new Schema({
     autor: String,
     texto: String,
@@ -33,7 +32,7 @@ var Mensaje = mongoose.model('Mensaje', Mensaje);
 
 function connecToMongoDB()
 {
-    mongoose.connect('mongodb://dsm:marko_dsm_2017@ds139370.mlab.com:39370/chat-dsm', function (err) {
+    mongoose.connect('mongodb://dsm:marko_dsm_2017@ds139370.mlab.com:39370/chat-dsm', { server: { auto_reconnect: true } }, function (err) {
         if(!err)
         {
             console.log("Conectado a la base de datos");

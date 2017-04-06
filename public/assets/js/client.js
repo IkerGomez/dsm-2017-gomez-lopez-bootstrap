@@ -261,7 +261,7 @@ $(window).on('beforeunload', function () {
         while(!finished && ((new Date().getTime() - start) < 2000)){}
     }
 
-    socket.close();
+    //socket.close();
 });
 
 function userTypingNotification(username, status)
