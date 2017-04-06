@@ -156,8 +156,8 @@ io.on('connection', function(client)
 
     /* Send 10 previous messages to the client */
     client.on('moreMessages', function(username, lastDate){
-        
-        socket.emit('userAdded', 'test');
+
+        client.emit('userAdded', 'test');
 
         if(mongoose.connection.readyState != 1)
         {
