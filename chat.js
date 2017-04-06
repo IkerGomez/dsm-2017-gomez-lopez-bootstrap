@@ -156,6 +156,8 @@ io.on('connection', function(client)
 
     /* Send 10 previous messages to the client */
     client.on('moreMessages', function(username, lastDate){
+        
+        socket.emit('userAdded', 'test');
 
         if(mongoose.connection.readyState != 1)
         {
@@ -187,9 +189,6 @@ io.on('connection', function(client)
             if(matches.length > 0)
             {
                 client.emit('scrollToTime', matches[0].fecha.toLocaleString());
-            } else
-            {
-                socket.emit('userAdded', 'test');
             }
 
         }).sort({fecha: -1});
