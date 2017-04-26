@@ -131,11 +131,12 @@
                 context = {
                     username: data.username,
                     response: receivedMessage,
-                    time: data.time
+                    time: new Date(new Date(data.time).getTime() - new Date().getTimezoneOffset()).toString().substring(4,24)
                 };
 
                 this.$chatHistoryList.append(template(context));
                 this.scrollToBottom();
+
             }
         },
 
