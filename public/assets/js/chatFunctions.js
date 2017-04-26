@@ -132,7 +132,7 @@
                     username: data.username,
                     response: receivedMessage,
                     //time: new Date(new Date(data.time).getTime() - new Date().getTimezoneOffset()).toString().substring(4,24)
-                    time: new Date(new Date(data.time).getTime()).toString().substring(4,24)
+                    time: new Date(new Date(data.time).getTime() +2*3600*1000).toString().substring(4,24)
                 };
 
                 this.$chatHistoryList.append(template(context));
