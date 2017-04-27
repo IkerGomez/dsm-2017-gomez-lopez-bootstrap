@@ -235,6 +235,9 @@ io.on('connection', function(client)
         if(notify)
         {
             client.broadcast.emit('logged', username, status);
+        } else
+        {
+            notify = true;
         }
 
     });
