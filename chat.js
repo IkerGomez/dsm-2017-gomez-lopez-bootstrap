@@ -218,6 +218,7 @@ io.on('connection', function(client)
     /* Notify all the users when somebody is typing */
     client.on('typing', function(username, status) {
         client.emit('typingChange', username, status);
+        
         client.broadcast.emit('typingChange', username, status);
     });
 
