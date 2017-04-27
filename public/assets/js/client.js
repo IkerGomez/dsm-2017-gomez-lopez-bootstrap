@@ -234,7 +234,15 @@ function userLogin()
 function requestMessages()
 {
     var username = $('#inputname')[0].value;
-    var lastDate = Date.parse($('.message-data-time')[0].innerHTML);
+    var numMessages = $('.num-messages')[0].innerHTML;
+    var lastDate;
+    if(numMessages > 0)
+    {
+        lastDate = Date.parse($('.message-data-time')[0].innerHTML);
+    } else
+    {
+        lastDate = new Date();
+    }
 
     socket.emit('moreMessages', username, lastDate);
 }

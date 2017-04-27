@@ -111,9 +111,9 @@ io.on('connection', function(client)
                 client.emit('updateUsers', connectedUsers);
 
                 /* Load only yesterday and today messages */
-                var currentDate = new Date;
+                var currentDate = new Date();
                 var limitDate = currentDate.setHours(0, 0, 0, 0);
-                limitDate -= 1;
+                limitDate -= 24*3600*1000;
 
                 Mensaje.find({fecha: {$gte: limitDate}}, function(err, matches){
 
@@ -218,7 +218,7 @@ io.on('connection', function(client)
     /* Notify all the users when somebody is typing */
     client.on('typing', function(username, status) {
         client.emit('typingChange', username, status);
-        
+
         client.broadcast.emit('typingChange', username, status);
     });
 
