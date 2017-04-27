@@ -107,6 +107,8 @@ io.on('connection', function(client)
 
             if(!alreadyConnected)
             {
+                notify = true;
+
                 /* Update list of users */
                 client.emit('updateUsers', connectedUsers);
 
@@ -146,10 +148,14 @@ io.on('connection', function(client)
                 client.broadcast.emit('updateUsers', connectedUsers);
             } else
             {
+                notify = false;
+
                 client.emit('alreadyConnected');
             }
         } else
         {
+            notify = false;
+
             client.emit('chatFull');
         }
     });
@@ -226,7 +232,11 @@ io.on('connection', function(client)
     client.on('logged', function(username, status) {
         client.emit('loggingDone');
 
-        client.broadcast.emit('logged', username, status);
+        if(notify)
+        {
+            client.broadcast.emit('logged', username, status);
+        }
+
     });
 
 });
